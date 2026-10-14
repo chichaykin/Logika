@@ -1,0 +1,9 @@
+# Cursor Rules for Logika (Mastermind PWA)
+# Refer to AGENTS.md for full codebase invariants.
+
+- Always run `npm run typecheck`, `npm run lint`, and `npm test` after modifying code.
+- Never add vertical scrollbars to the game board; layout must strictly conform to `100dvh`.
+- Keep `src/core/` pure without DOM or UI imports.
+- Keep the Knuth solver off-thread in `src/solver/solver.worker.ts`.
+- Slot popover must always position downward (`popover-down`).
+- Any new translation key in `src/i18n/ru.ts` must be mirrored in `src/i18n/en.ts`.
