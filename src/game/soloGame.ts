@@ -57,7 +57,16 @@ export function saveActiveSolo(state: SoloState | null): void {
 
 export function loadActiveSolo(): SoloState | null {
   const loaded = loadJson<SoloState | null>(SOLO_KEY, null);
-  if (loaded && loaded.status === 'playing' && Array.isArray(loaded.attempts) && Array.isArray(loaded.secret)) {
+  if (
+    loaded &&
+    loaded.status === 'playing' &&
+    loaded.config &&
+    typeof loaded.config.length === 'number' &&
+    typeof loaded.config.colors === 'number' &&
+    typeof loaded.config.maxAttempts === 'number' &&
+    Array.isArray(loaded.attempts) &&
+    Array.isArray(loaded.secret)
+  ) {
     return loaded;
   }
   return null;

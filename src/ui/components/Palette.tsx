@@ -41,6 +41,9 @@ export function Palette(props: PaletteProps) {
       } else if (e.key === 'Backspace') {
         e.preventDefault();
         d.backspace();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        d.reset();
       } else if (e.key === 'Enter' && !off && (tag !== 'BUTTON' || (e.target as HTMLElement).dataset.palette)) {
         e.preventDefault();
         submit();

@@ -1,5 +1,6 @@
 import type { Feedback } from '../../core/config';
 import { isPossibleFeedback } from '../../core/feedback';
+import { t } from '../../i18n';
 import { KeyPeg, type KeyKind } from './Peg';
 
 export interface FeedbackInputProps {
@@ -60,7 +61,10 @@ export function FeedbackInput({ length, value, onChange, disabled }: FeedbackInp
           class={`fb-peg-btn kp-${k}`}
           disabled={disabled}
           onClick={() => cycleAt(i)}
-          aria-label={`Ключ ${i + 1}: ${k === 'black' ? 'чёрный' : k === 'white' ? 'белый' : 'пусто'}`}
+          aria-label={t('game.keySlot', {
+            i: i + 1,
+            kind: k === 'black' ? t('game.keyBlack') : k === 'white' ? t('game.keyWhite') : t('game.empty'),
+          })}
         >
           <KeyPeg kind={k} />
         </button>

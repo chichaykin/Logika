@@ -14,6 +14,8 @@ export const en: Dict = {
   'menu.rules': 'Rules',
   'menu.settings': 'Settings',
   'menu.resume': 'You have an unfinished game — continue?',
+  'menu.resumeAttempt': 'turn {attempt}',
+  'menu.mainMenu': 'Main menu',
 
   'common.back': 'Back',
   'common.menu': 'Menu',
@@ -49,6 +51,9 @@ export const en: Dict = {
   'game.keys': 'Keys: {black} black, {white} white',
   'game.keysNone': 'Keys: no matches',
   'game.row': 'Turn {n}',
+  'game.keySlot': 'Key {i}: {kind}',
+  'game.keyBlack': 'black',
+  'game.keyWhite': 'white',
 
   'color.0': 'red',
   'color.1': 'blue',
@@ -102,6 +107,7 @@ export const en: Dict = {
     one: '{n} turn',
     other: '{n} turns',
   },
+  'duel.drawsCount': '(draws: {n})',
 
   'stats.title': 'Statistics',
   'stats.preset': 'Mode',
@@ -157,6 +163,12 @@ export const en: Dict = {
   'rules.p3': 'The order of the keys does not tell which peg was matched. Colors may repeat in the code (unless turned off in settings).',
   'rules.p4': '“Computer guesses” mode: you pick a code and the computer cracks it using Donald Knuth’s algorithm — in the classic game it needs at most 5 turns.',
   'rules.p5': 'The “Hint” button shows the best move by the same algorithm and how many codes are still possible. Used hints are counted in statistics.',
+  'rules.exampleTitle': 'Feedback example',
+  'rules.exampleDesc': '1 peg guessed accurately (black key), 1 color is in the code but on another position (white key), 2 colors are not guessed.',
+  'rules.knuthTitle': 'Knuth’s algorithm',
+  'rules.knuthP1': 'In 1977, Donald Knuth proved that any 4-peg, 6-color code can be cracked in at most 5 guesses using minimax: choosing a guess that minimizes the worst-case number of remaining candidates.',
+  'rules.historyTitle': 'History of “Logika”',
+  'rules.historyP1': 'In the USSR, this board game was released under the name “Logika” on a yellow plastic board with colored peg caps. It was an adaptation of the classic Mastermind (1970) game by Mordecai Meirowitz, rooted in the older game Bulls and Cows.',
 
   'install.button': 'Install app',
   'install.ios': 'To install: tap “Share” and choose “Add to Home Screen”.',

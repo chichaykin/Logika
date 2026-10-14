@@ -39,13 +39,13 @@ export function Home() {
               class="btn btn-primary"
               onClick={() => navigate('solo')}
             >
-              {t('common.confirm')} ({activeSolo.attempts.length + 1}-я попытка)
+              {t('common.confirm')} ({t('menu.resumeAttempt', { attempt: activeSolo.attempts.length + 1 })})
             </button>
           </div>
         </section>
       )}
 
-      <nav class="menu-list" aria-label="Главное меню">
+      <nav class="menu-list" aria-label={t('menu.mainMenu')}>
         <button
           type="button"
           class="menu-item menu-item-primary"

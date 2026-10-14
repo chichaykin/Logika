@@ -1,4 +1,4 @@
-import { useRef, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import type { Code, Feedback } from '../../core/config';
 import { isPossibleFeedback } from '../../core/feedback';
 import { configForSettings } from '../../data/settings';
@@ -37,10 +37,26 @@ export function Computer() {
   const [fbError, setFbError] = useState<string | null>(null);
 
   const computingRef = useRef(false);
+  const mountedRef = useRef(true);
+  const moveSessionRef = useRef(0);
+  const timerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      moveSessionRef.current++;
+      if (timerRef.current !== null) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, []);
 
   // Запуск первого хода при старте игры
   const makeMove = async (curGame: ComputerState) => {
     if (computingRef.current || curGame.status !== 'playing') return;
+    const sessionId = ++moveSessionRef.current;
     computingRef.current = true;
     setThinking(true);
     setFbError(null);
@@ -52,6 +68,8 @@ export function Computer() {
         solver.nextGuess(curGame.config, curGame.history),
         minDelay,
       ]);
+
+      if (!mountedRef.current || moveSessionRef.current !== sessionId) return;
 
       let updated = setComputerGuess(curGame, nextGuess);
 
@@ -68,8 +86,9 @@ export function Computer() {
           });
         } else {
           // Следующий шаг с паузой
-          setTimeout(() => {
-            computingRef.current = false;
+          computingRef.current = false;
+          timerRef.current = window.setTimeout(() => {
+            if (!mountedRef.current || moveSessionRef.current !== sessionId) return;
             makeMove(updated);
           }, 400);
           return;
@@ -79,16 +98,26 @@ export function Computer() {
         setManualFb({ black: 0, white: 0 });
       }
     } catch {
+      if (!mountedRef.current || moveSessionRef.current !== sessionId) return;
       // Ошибка солвера (нет кандидатов)
       const at = await solver.findContradiction(curGame.config, curGame.history);
+      if (!mountedRef.current || moveSessionRef.current !== sessionId) return;
       setGame(markContradiction(curGame, at ?? curGame.history.length));
     } finally {
-      computingRef.current = false;
-      setThinking(false);
+      if (mountedRef.current && moveSessionRef.current === sessionId) {
+        computingRef.current = false;
+        setThinking(false);
+      }
     }
   };
 
   const handleStartGame = (chosenMode: FeedbackMode, secret: Code | null) => {
+    moveSessionRef.current++;
+    if (timerRef.current !== null) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    computingRef.current = false;
     const fresh = newComputerGame(cfg, chosenMode, secret);
     setGame(fresh);
     setMode(chosenMode);
@@ -119,6 +148,7 @@ export function Computer() {
 
       // Проверяем, нет ли противоречия после этого ответа
       const contradictionIdx = await solver.findContradiction(updated.config, updated.history);
+      if (!mountedRef.current) return;
       if (contradictionIdx !== null) {
         setGame(markContradiction(updated, contradictionIdx + 1));
         return;
@@ -127,7 +157,9 @@ export function Computer() {
       // Если всё в порядке, компьютер думает над следующим ходом
       makeMove(updated);
     } catch {
-      setFbError(t('computer.keysInvalid'));
+      if (mountedRef.current) {
+        setFbError(t('computer.keysInvalid'));
+      }
     }
   };
 
@@ -139,6 +171,13 @@ export function Computer() {
   };
 
   const startNew = () => {
+    moveSessionRef.current++;
+    if (timerRef.current !== null) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    computingRef.current = false;
+    setThinking(false);
     setHasStarted(false);
     secretDraft.reset();
     setManualFb({ black: 0, white: 0 });

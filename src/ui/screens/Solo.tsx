@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import type { Code } from '../../core/config';
 import { configForSettings } from '../../data/settings';
 import {
@@ -40,12 +40,25 @@ export function Solo() {
   const [hintLoading, setHintLoading] = useState(false);
   const [confirmNew, setConfirmNew] = useState(false);
 
+  const mountedRef = useRef(true);
+  const hintReqRef = useRef(0);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      hintReqRef.current++;
+    };
+  }, []);
+
   useEffect(() => {
     saveActiveSolo(game.status === 'playing' ? game : null);
   }, [game]);
 
   const handleGuessSubmit = () => {
     if (!draft.code || game.status !== 'playing') return;
+    hintReqRef.current++;
+    setHintLoading(false);
     haptic(15);
     try {
       const next = submitSoloGuess(game, draft.code);
@@ -68,15 +81,19 @@ export function Solo() {
 
   const handleRequestHint = async () => {
     if (game.status !== 'playing' || hintLoading) return;
+    const reqId = ++hintReqRef.current;
     setHintLoading(true);
     try {
       const res = await solver.hint(game.config, game.attempts);
+      if (!mountedRef.current || hintReqRef.current !== reqId) return;
       setHintData(res);
-      setGame(registerSoloHint(game));
+      setGame((prev) => registerSoloHint(prev));
     } catch {
       // ignore
     } finally {
-      setHintLoading(false);
+      if (mountedRef.current && hintReqRef.current === reqId) {
+        setHintLoading(false);
+      }
     }
   };
 
@@ -88,6 +105,8 @@ export function Solo() {
   };
 
   const startNewGame = () => {
+    hintReqRef.current++;
+    setHintLoading(false);
     const fresh = newSolo(cfg);
     setGame(fresh);
     draft.reset();

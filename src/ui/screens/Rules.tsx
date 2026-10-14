@@ -34,7 +34,7 @@ export function Rules() {
         </section>
 
         <section class="rule-block example-block">
-          <h4>Пример подсказки</h4>
+          <h4>{t('rules.exampleTitle')}</h4>
           <div class="example-row">
             <div class="example-pegs">
               <Peg color={0} />
@@ -50,29 +50,19 @@ export function Rules() {
               <KeyPeg kind="none" />
             </div>
           </div>
-          <small>
-            1 штырёк угадан точно (чёрный ключ), 1 цвет есть в коде, но на другой позиции (белый ключ), 2 цвета не угаданы.
-          </small>
+          <small>{t('rules.exampleDesc')}</small>
         </section>
 
         <section class="rule-block">
-          <h3>Алгоритм Кнута</h3>
+          <h3>{t('rules.knuthTitle')}</h3>
           <p>{t('rules.p4')}</p>
           <p>{t('rules.p5')}</p>
-          <p>
-            В 1977 году американский математик Дональд Кнут доказал, что любой 4-значный код из 6 цветов
-            можно гарантированно отгадать <strong>максимум за 5 попыток</strong>, используя стратегию минимакса:
-            выбирается такой ход, который в худшем случае оставляет наименьшее число возможных кандидатов.
-          </p>
+          <p>{t('rules.knuthP1')}</p>
         </section>
 
         <section class="rule-block">
-          <h3>История «Логики»</h3>
-          <p>
-            В СССР эта настольная игра выпускалась под названием «Логика» на жёлтом пластиковом поле с цветными
-            колпачками-штырьками. Она была адаптацией классической игры Mastermind (1970) Мордехая Мейровица,
-            которая восходит к старинной игре «Быки и коровы».
-          </p>
+          <h3>{t('rules.historyTitle')}</h3>
+          <p>{t('rules.historyP1')}</p>
         </section>
       </main>
     </div>

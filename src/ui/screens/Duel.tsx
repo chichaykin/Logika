@@ -281,7 +281,7 @@ export function Duel() {
           <h4>{t('duel.score')}</h4>
           <p>
             {playerName(0)} <strong>{game.wins[0]}</strong> : <strong>{game.wins[1]}</strong> {playerName(1)}
-            {game.draws > 0 && <small> (ничьих: {game.draws})</small>}
+            {game.draws > 0 && <small> {t('duel.drawsCount', { n: game.draws })}</small>}
           </p>
         </div>
 
