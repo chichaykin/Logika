@@ -209,6 +209,8 @@ export function Solo() {
           secret={game.secret}
           revealed={isOver}
           colorblind={settings.value.colorblind}
+          onPlaceColor={game.status === 'playing' ? draft.place : undefined}
+          onDeselect={game.status === 'playing' ? draft.deselect : undefined}
         />
       </main>
 

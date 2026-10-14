@@ -1,4 +1,4 @@
-import { useReducer } from 'preact/hooks';
+import { useEffect, useReducer } from 'preact/hooks';
 import type { Code, GameConfig } from '../core/config';
 
 export type Draft = (number | null)[];
@@ -11,6 +11,7 @@ interface State {
 type Action =
   | { type: 'place'; color: number }
   | { type: 'select'; index: number }
+  | { type: 'deselect' }
   | { type: 'backspace' }
   | { type: 'reset' }
   | { type: 'set'; code: Code };
@@ -30,20 +31,22 @@ export function draftReducer(config: GameConfig, s: State, a: Action): State {
       const draft = [...s.draft];
       draft[target] = a.color;
       const next = draft.indexOf(null);
-      return { draft, selected: next < 0 ? null : next };
+      return { draft, selected: s.selected !== null ? (next < 0 ? null : next) : null };
     }
     case 'select':
-      return { ...s, selected: s.selected === a.index ? s.selected : a.index };
+      return { ...s, selected: s.selected === a.index ? null : a.index };
+    case 'deselect':
+      return { ...s, selected: null };
     case 'backspace': {
       let target = s.selected !== null && s.draft[s.selected] !== null ? s.selected : -1;
       if (target < 0) for (let i = s.draft.length - 1; i >= 0; i--) if (s.draft[i] !== null) { target = i; break; }
       if (target < 0) return s;
       const draft = [...s.draft];
       draft[target] = null;
-      return { draft, selected: target };
+      return { draft, selected: s.selected !== null ? target : null };
     }
     case 'reset':
-      return { draft: emptyDraft(config.length), selected: 0 };
+      return { draft: emptyDraft(config.length), selected: null };
     case 'set':
       return { draft: [...a.code], selected: null };
   }
@@ -56,6 +59,7 @@ export interface DraftController {
   code: Code | null;
   place(color: number): void;
   select(index: number): void;
+  deselect(): void;
   backspace(): void;
   reset(): void;
   set(code: Code): void;
@@ -66,8 +70,15 @@ export function useDraft(config: GameConfig): DraftController {
   const [state, dispatch] = useReducer(
     (s: State, a: Action) => draftReducer(config, s, a),
     undefined,
-    (): State => ({ draft: emptyDraft(config.length), selected: 0 }),
+    (): State => ({ draft: emptyDraft(config.length), selected: null }),
   );
+
+  useEffect(() => {
+    if (state.draft.length !== config.length) {
+      dispatch({ type: 'reset' });
+    }
+  }, [config.length]);
+
   const complete = state.draft.every((c) => c !== null);
   return {
     draft: state.draft,
@@ -75,6 +86,7 @@ export function useDraft(config: GameConfig): DraftController {
     code: complete ? (state.draft as number[]) : null,
     place: (color) => dispatch({ type: 'place', color }),
     select: (index) => dispatch({ type: 'select', index }),
+    deselect: () => dispatch({ type: 'deselect' }),
     backspace: () => dispatch({ type: 'backspace' }),
     reset: () => dispatch({ type: 'reset' }),
     set: (code) => dispatch({ type: 'set', code }),

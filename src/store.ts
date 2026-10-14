@@ -23,6 +23,14 @@ effect(() => {
   if (typeof document !== 'undefined') document.documentElement.lang = loc;
 });
 
+/** Тема оформления следует за настройкой. */
+effect(() => {
+  const th = settings.value.theme ?? 'luxe';
+  if (typeof document !== 'undefined') {
+    document.documentElement.dataset.theme = th;
+  }
+});
+
 export function updateSettings(patch: Partial<Settings>): void {
   settings.value = { ...settings.value, ...patch };
   saveSettings(settings.value);

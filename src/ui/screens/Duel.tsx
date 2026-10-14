@@ -92,6 +92,8 @@ export function Duel() {
               ]}
               revealed={true}
               colorblind={settings.value.colorblind}
+              onPlaceColor={draft.place}
+              onDeselect={draft.deselect}
             />
           </div>
 
@@ -181,6 +183,8 @@ export function Duel() {
             secret={game.secret}
             revealed={false}
             colorblind={settings.value.colorblind}
+            onPlaceColor={draft.place}
+            onDeselect={draft.deselect}
           />
         </main>
 

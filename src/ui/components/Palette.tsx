@@ -43,7 +43,11 @@ export function Palette(props: PaletteProps) {
         d.backspace();
       } else if (e.key === 'Escape') {
         e.preventDefault();
-        d.reset();
+        if (d.selected !== null) {
+          d.deselect();
+        } else {
+          d.reset();
+        }
       } else if (e.key === 'Enter' && !off && (tag !== 'BUTTON' || (e.target as HTMLElement).dataset.palette)) {
         e.preventDefault();
         submit();
@@ -73,6 +77,7 @@ export function Palette(props: PaletteProps) {
               }}
             >
               <Peg color={i} symbol={colorblind} />
+              <span class="pal-key-hint" aria-hidden="true">{i + 1}</span>
             </button>
           );
         })}

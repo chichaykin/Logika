@@ -12,10 +12,13 @@ export function Settings() {
   };
 
   const handleCustomChange = (patch: Partial<typeof current.custom>) => {
+    const raw = { ...current.custom, ...patch };
     updateSettings({
       custom: {
-        ...current.custom,
-        ...patch,
+        length: Math.min(5, Math.max(4, Number(raw.length) || 4)),
+        colors: Math.min(8, Math.max(6, Number(raw.colors) || 6)),
+        maxAttempts: Math.min(20, Math.max(4, Number(raw.maxAttempts) || 10)),
+        repeats: Boolean(raw.repeats),
       },
     });
   };
@@ -31,6 +34,45 @@ export function Settings() {
       </header>
 
       <main class="settings-content">
+        {/* Тема оформления */}
+        <section class="card settings-section">
+          <h3>{t('settings.theme')}</h3>
+          <div class="theme-grid">
+            <button
+              type="button"
+              class={`btn theme-btn ${current.theme === 'luxe' ? 'btn-primary' : ''}`}
+              onClick={() => updateSettings({ theme: 'luxe' })}
+            >
+              <span class="theme-dot dot-luxe" aria-hidden="true" />
+              <span>{t('settings.themeLuxe')}</span>
+            </button>
+            <button
+              type="button"
+              class={`btn theme-btn ${current.theme === 'slate' ? 'btn-primary' : ''}`}
+              onClick={() => updateSettings({ theme: 'slate' })}
+            >
+              <span class="theme-dot dot-slate" aria-hidden="true" />
+              <span>{t('settings.themeSlate')}</span>
+            </button>
+            <button
+              type="button"
+              class={`btn theme-btn ${current.theme === 'emerald' ? 'btn-primary' : ''}`}
+              onClick={() => updateSettings({ theme: 'emerald' })}
+            >
+              <span class="theme-dot dot-emerald" aria-hidden="true" />
+              <span>{t('settings.themeEmerald')}</span>
+            </button>
+            <button
+              type="button"
+              class={`btn theme-btn ${current.theme === 'retro' ? 'btn-primary' : ''}`}
+              onClick={() => updateSettings({ theme: 'retro' })}
+            >
+              <span class="theme-dot dot-retro" aria-hidden="true" />
+              <span>{t('settings.themeRetro')}</span>
+            </button>
+          </div>
+        </section>
+
         {/* Язык */}
         <section class="card settings-section">
           <h3>{t('settings.language')}</h3>

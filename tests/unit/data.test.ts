@@ -56,7 +56,7 @@ describe('settings', () => {
   it('значения по умолчанию и сохранение', () => {
     const st = new MemoryStorage();
     expect(loadSettings(st)).toEqual(defaultSettings());
-    const s = { ...defaultSettings(), lang: 'en' as const, preset: 'hard' as const, colorblind: true };
+    const s = { ...defaultSettings(), lang: 'en' as const, theme: 'slate' as const, preset: 'hard' as const, colorblind: true };
     saveSettings(s, st);
     expect(loadSettings(st)).toEqual(s);
     expect(configForSettings(s)).toEqual(PRESETS.hard);
@@ -64,9 +64,10 @@ describe('settings', () => {
 
   it('мусор в хранилище заменяется значениями по умолчанию', () => {
     const st = new MemoryStorage();
-    st.setItem('logika:settings:v1', JSON.stringify({ lang: 'xx', preset: 'wat', custom: { length: 99, colors: 1 } }));
+    st.setItem('logika:settings:v1', JSON.stringify({ lang: 'xx', theme: 'invalid', preset: 'wat', custom: { length: 99, colors: 1 } }));
     const s = loadSettings(st);
     expect(s.lang).toBe('auto');
+    expect(s.theme).toBe('luxe');
     expect(s.preset).toBe('classic');
     expect(s.custom.length).toBe(5);
     expect(s.custom.colors).toBe(6);

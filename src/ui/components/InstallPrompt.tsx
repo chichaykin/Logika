@@ -51,7 +51,7 @@ export function InstallPrompt() {
 
   if (deferredPrompt) {
     return (
-      <div class="install-prompt-banner" role="banner">
+      <div class="install-prompt-banner" role="region" aria-label={t('install.button')}>
         <span>{t('install.button')}</span>
         <div class="install-actions">
           <button type="button" class="btn btn-sm btn-primary" onClick={handleInstallClick}>
@@ -67,7 +67,7 @@ export function InstallPrompt() {
 
   if (isIOS) {
     return (
-      <div class="install-prompt-banner ios-prompt" role="banner">
+      <div class="install-prompt-banner ios-prompt" role="region" aria-label={t('install.ios')}>
         <span>{t('install.ios')}</span>
         <button type="button" class="btn btn-sm" onClick={() => setDismissed(true)}>
           ✕

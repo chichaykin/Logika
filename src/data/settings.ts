@@ -5,9 +5,11 @@ import { loadJson, saveJson, type StorageLike } from './storage';
 const KEY = 'logika:settings:v1';
 
 export type Lang = 'auto' | 'ru' | 'en';
+export type ThemeId = 'luxe' | 'slate' | 'emerald' | 'retro';
 
 export interface Settings {
   lang: Lang;
+  theme: ThemeId;
   /** Показывать символы на штырьках (для дальтоников). */
   colorblind: boolean;
   vibration: boolean;
@@ -19,6 +21,7 @@ export interface Settings {
 export function defaultSettings(): Settings {
   return {
     lang: 'auto',
+    theme: 'luxe',
     colorblind: false,
     vibration: true,
     preset: 'classic',
@@ -38,6 +41,7 @@ export function loadSettings(storage?: StorageLike): Settings {
   const customRaw = typeof raw.custom === 'object' && raw.custom !== null ? raw.custom : {};
   const merged: Settings = { ...def, ...raw, custom: normalizeConfig({ ...def.custom, ...customRaw }) };
   if (!['classic', 'hard', 'custom'].includes(merged.preset)) merged.preset = def.preset;
+  if (!['luxe', 'slate', 'emerald', 'retro'].includes(merged.theme)) merged.theme = def.theme;
   if (!['auto', 'ru', 'en'].includes(merged.lang)) merged.lang = def.lang;
   if (!['manual', 'auto'].includes(merged.feedbackMode)) merged.feedbackMode = def.feedbackMode;
   if (typeof merged.colorblind !== 'boolean') merged.colorblind = def.colorblind;

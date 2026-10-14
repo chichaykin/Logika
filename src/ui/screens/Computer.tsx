@@ -235,6 +235,8 @@ export function Computer() {
                   ]}
                   revealed={true}
                   colorblind={settings.value.colorblind}
+                  onPlaceColor={secretDraft.place}
+                  onDeselect={secretDraft.deselect}
                 />
               </div>
               <Palette

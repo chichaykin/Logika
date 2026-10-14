@@ -5,6 +5,7 @@ import { t } from '../../i18n';
 import { navigate } from '../../router';
 import { settings } from '../../store';
 import { InstallPrompt } from '../components/InstallPrompt';
+import { Peg } from '../components/Peg';
 
 export function Home() {
   const [activeSolo, setActiveSolo] = useState<SoloState | null>(null);
@@ -21,10 +22,10 @@ export function Home() {
         <div class="logo-box">
           <h1 class="logo-title">{t('app.title')}</h1>
           <div class="logo-pegs" aria-hidden="true">
-            <span class="logo-peg lp-red" />
-            <span class="logo-peg lp-blue" />
-            <span class="logo-peg lp-green" />
-            <span class="logo-peg lp-yellow" />
+            <span class="logo-peg-wrapper"><Peg color={0} /></span>
+            <span class="logo-peg-wrapper"><Peg color={1} /></span>
+            <span class="logo-peg-wrapper"><Peg color={2} /></span>
+            <span class="logo-peg-wrapper"><Peg color={3} /></span>
           </div>
         </div>
         <p class="logo-subtitle">{t('app.subtitle')}</p>

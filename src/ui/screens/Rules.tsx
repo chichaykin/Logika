@@ -18,8 +18,10 @@ export function Rules() {
           <p>{t('rules.p1')}</p>
         </section>
 
+        {/* Как читать ответ */}
         <section class="rule-block">
-          <h3>{t('rules.p2')}</h3>
+          <h3>{t('rules.howToReadTitle')}</h3>
+          <p style={{ marginBottom: 10 }}>{t('rules.howToReadP1')}</p>
           <ul class="keys-legend">
             <li>
               <KeyPeg kind="black" />
@@ -29,10 +31,14 @@ export function Rules() {
               <KeyPeg kind="white" />
               <span>{t('rules.white')}</span>
             </li>
+            <li>
+              <KeyPeg kind="none" />
+              <span>{t('rules.empty')}</span>
+            </li>
           </ul>
-          <p>{t('rules.p3')}</p>
         </section>
 
+        {/* Наглядный пример */}
         <section class="rule-block example-block">
           <h4>{t('rules.exampleTitle')}</h4>
           <div class="example-row">
@@ -53,6 +59,38 @@ export function Rules() {
           <small>{t('rules.exampleDesc')}</small>
         </section>
 
+        {/* Правило повторов */}
+        <section class="rule-block">
+          <h3>{t('rules.repeatsRuleTitle')}</h3>
+          <p>{t('rules.repeatsRuleP1')}</p>
+          <div class="example-row" style={{ marginTop: 10 }}>
+            <div class="example-pegs">
+              <Peg color={0} />
+              <Peg color={0} />
+              <Peg color={4} />
+              <Peg color={5} />
+            </div>
+            <span class="example-arrow">→</span>
+            <div class="example-keys">
+              <KeyPeg kind="black" />
+              <KeyPeg kind="none" />
+              <KeyPeg kind="none" />
+              <KeyPeg kind="none" />
+            </div>
+          </div>
+          <small>{t('rules.exampleRepeatsDesc')}</small>
+        </section>
+
+        {/* Как анализировать */}
+        <section class="rule-block">
+          <h3>{t('rules.strategyTitle')}</h3>
+          <p>{t('rules.strategyP1')}</p>
+          <p>{t('rules.strategyP2')}</p>
+          <p>{t('rules.strategyP3')}</p>
+          <p>{t('rules.strategyP4')}</p>
+        </section>
+
+        {/* Алгоритм Кнута */}
         <section class="rule-block">
           <h3>{t('rules.knuthTitle')}</h3>
           <p>{t('rules.p4')}</p>
@@ -60,6 +98,7 @@ export function Rules() {
           <p>{t('rules.knuthP1')}</p>
         </section>
 
+        {/* История */}
         <section class="rule-block">
           <h3>{t('rules.historyTitle')}</h3>
           <p>{t('rules.historyP1')}</p>
