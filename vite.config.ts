@@ -4,6 +4,14 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   base: './',
+  server: {
+    port: 5180,
+    host: true,
+  },
+  preview: {
+    port: 5180,
+    host: true,
+  },
   plugins: [
     preact(),
     VitePWA({
