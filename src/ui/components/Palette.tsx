@@ -43,11 +43,7 @@ export function Palette(props: PaletteProps) {
         d.backspace();
       } else if (e.key === 'Escape') {
         e.preventDefault();
-        if (d.selected !== null) {
-          d.deselect();
-        } else {
-          d.reset();
-        }
+        d.deselect();
       } else if (e.key === 'Enter' && !off && (tag !== 'BUTTON' || (e.target as HTMLElement).dataset.palette)) {
         e.preventDefault();
         submit();

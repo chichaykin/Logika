@@ -6,7 +6,7 @@ export type Rng = () => number;
 /** Криптостойкий источник случайности по умолчанию. */
 export const secureRng: Rng = () => {
   const buf = new Uint32Array(1);
-  crypto.getRandomValues(buf);
+  (globalThis.crypto ?? crypto).getRandomValues(buf);
   return buf[0] / 0x100000000;
 };
 

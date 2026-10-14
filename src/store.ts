@@ -20,7 +20,10 @@ export const stats = signal<StatsData>(loadStats());
 effect(() => {
   const loc = resolveLocale(settings.value.lang);
   locale.value = loc;
-  if (typeof document !== 'undefined') document.documentElement.lang = loc;
+  if (typeof document !== 'undefined') {
+    document.documentElement.lang = loc;
+    document.title = loc === 'ru' ? 'Логика' : 'Logika';
+  }
 });
 
 /** Тема оформления следует за настройкой. */

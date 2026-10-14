@@ -65,6 +65,14 @@ export function Settings() {
             </button>
             <button
               type="button"
+              class={`btn theme-btn ${current.theme === 'emerald' ? 'btn-primary' : ''}`}
+              onClick={() => updateSettings({ theme: 'emerald' })}
+            >
+              <span class="theme-dot dot-emerald" aria-hidden="true" />
+              <span>{t('settings.themeEmerald')}</span>
+            </button>
+            <button
+              type="button"
               class={`btn theme-btn ${current.theme === 'retro' ? 'btn-primary' : ''}`}
               onClick={() => updateSettings({ theme: 'retro' })}
             >

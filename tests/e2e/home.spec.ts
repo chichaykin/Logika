@@ -27,6 +27,10 @@ test.describe('Home and Navigation', () => {
     await page.click('button:has-text("Светлый травертин")');
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'travertine');
 
+    // Switch theme to Emerald
+    await page.click('button:has-text("Изумрудное сукно")');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'emerald');
+
     // Switch theme to Retro
     await page.click('button:has-text("Классическое ретро")');
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'retro');
