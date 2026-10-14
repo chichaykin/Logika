@@ -373,9 +373,69 @@ button:disabled {
 
 /* ================== HOME SCREEN ================== */
 
+.home-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: clamp(2px, 1vh, 6px);
+  min-height: 32px;
+}
+
+.home-lang-switch {
+  display: inline-flex;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 3px 6px;
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  gap: 2px;
+}
+
+.home-lang-icon {
+  font-size: 0.9rem;
+  margin: 0 4px 0 2px;
+  opacity: 0.85;
+}
+
+.home-lang-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1;
+}
+
+.home-lang-btn:hover:not(.active) {
+  color: var(--text-color);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.home-lang-btn.active {
+  background: var(--primary-bg);
+  color: var(--primary-text);
+  box-shadow: var(--primary-shadow);
+}
+
+.home-lang-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--card-border);
+  margin: 0 1px;
+}
+
 .home-header {
   text-align: center;
-  margin: 24px 0 20px;
+  margin: clamp(10px, 2vh, 18px) 0 clamp(8px, 1.5vh, 16px);
 }
 
 .logo-box {

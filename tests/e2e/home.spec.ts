@@ -46,4 +46,29 @@ test.describe('Home and Navigation', () => {
     await page.click('text=В меню');
     await expect(page.locator('.logo-title')).toHaveText(/логика/i);
   });
+
+  test('switches language directly on home screen', async ({ page }) => {
+    await page.goto('/');
+
+    // Initially in Russian (due to playwright config locale: ru-RU)
+    await expect(page.locator('.logo-title')).toHaveText(/логика/i);
+    await expect(page.locator('.home-lang-btn.active')).toHaveText('RU');
+
+    // Click EN in home-top-bar
+    await page.click('.home-lang-btn:has-text("EN")');
+    await expect(page.locator('.logo-title')).toHaveText(/logika/i);
+    await expect(page.locator('.home-lang-btn.active')).toHaveText('EN');
+    await expect(page.locator('.menu-item-primary .menu-item-title')).toHaveText('Play');
+
+    // Reload page to verify persistence
+    await page.reload();
+    await expect(page.locator('.logo-title')).toHaveText(/logika/i);
+    await expect(page.locator('.home-lang-btn.active')).toHaveText('EN');
+
+    // Switch back to RU
+    await page.click('.home-lang-btn:has-text("RU")');
+    await expect(page.locator('.logo-title')).toHaveText(/логика/i);
+    await expect(page.locator('.home-lang-btn.active')).toHaveText('RU');
+    await expect(page.locator('.menu-item-primary .menu-item-title')).toHaveText('Играть');
+  });
 });

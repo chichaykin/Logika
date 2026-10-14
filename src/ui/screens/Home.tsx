@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'preact/hooks';
 import { configForSettings } from '../../data/settings';
 import { loadActiveSolo, type SoloState } from '../../game/soloGame';
-import { t } from '../../i18n';
+import { locale, t } from '../../i18n';
 import { navigate } from '../../router';
-import { settings } from '../../store';
+import { haptic, settings, updateSettings } from '../../store';
 import { InstallPrompt } from '../components/InstallPrompt';
 import { Peg } from '../components/Peg';
 
@@ -15,9 +15,40 @@ export function Home() {
   }, []);
 
   const cfg = configForSettings(settings.value);
+  const currentLocale = locale.value;
+
+  const handleLangChange = (lang: 'ru' | 'en') => {
+    updateSettings({ lang });
+    haptic(8);
+  };
 
   return (
     <div class="screen screen-home">
+      <div class="home-top-bar">
+        <div class="home-lang-switch" role="group" aria-label={t('settings.language')}>
+          <span class="home-lang-icon" aria-hidden="true">🌐</span>
+          <button
+            type="button"
+            class={`home-lang-btn ${currentLocale === 'ru' ? 'active' : ''}`}
+            onClick={() => handleLangChange('ru')}
+            aria-pressed={currentLocale === 'ru'}
+            aria-label="Русский"
+          >
+            RU
+          </button>
+          <span class="home-lang-divider" aria-hidden="true" />
+          <button
+            type="button"
+            class={`home-lang-btn ${currentLocale === 'en' ? 'active' : ''}`}
+            onClick={() => handleLangChange('en')}
+            aria-pressed={currentLocale === 'en'}
+            aria-label="English"
+          >
+            EN
+          </button>
+        </div>
+      </div>
+
       <header class="home-header">
         <div class="logo-box">
           <h1 class="logo-title">{t('app.title')}</h1>
