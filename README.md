@@ -20,10 +20,10 @@
 
 - 🔮 **Photorealistic Marble Aesthetic**: Tactile glass and polished marble spheres with ambient occlusion, 3D highlights, subtle veining, and realistic wood/board socket inlays.
 - 🎨 **4 Handcrafted Themes**:
-  - **Dark Luxury**: Deep obsidian, slate, and glowing metallic accents.
-  - **Scandinavian Wood**: Warm natural walnut, oak textures, and earthy tones.
-  - **Cyberpunk Neon**: High-contrast vibrant futuristic palette with subtle neon glows.
-  - **Classic Board**: Traditional wooden game board with ivory and stone pegs.
+  - **Dark Walnut (Luxe Noir)**: Rich walnut wood, polished brass inlays, and warm ambient vignette.
+  - **Dark Slate**: Cool graphite slate stone, brushed metal highlights, and deep shadows.
+  - **Light Travertine**: Honed cream travertine limestone, delicate marble veining, and warm bronze trim.
+  - **Classic Retro**: Iconic 1972 vintage Mastermind board with warm amber bakelite tones.
 - 📱 **Zero-Scroll Dynamic Viewport (`100dvh`)**: The entire game board scales seamlessly to fit any device screen—from small smartphones to large desktop displays—without requiring vertical scrolling.
 - 🎯 **Ergonomic In-Place Marble Picker**: Tap any slot on the active row to open an inline popover picker that *always* opens below the current row, preserving complete visibility of all previous attempts and feedback pegs.
 - 🤖 **Knuth Five-Guess AI Solver**: Play against or get hints from an optimal codebreaker algorithm running in an isolated Web Worker to maintain a smooth 60/120 FPS interface.
@@ -59,7 +59,7 @@ After each guess, the game provides clue pegs to evaluate your attempt:
 
 ### Ключевые особенности
 - 🔮 **Мраморные шарики**: Реалистичные блики, внутренний градиент, тени в углублениях доски и тактильная анимация выбора.
-- 🎨 **4 атмосферные темы**: Тёмный люкс, Скандинавское дерево, Киберпанк и Классическая доска.
+- 🎨 **4 атмосферные темы**: Тёмное дерево (Орех и латунь / Luxe Noir), Тёмный сланец, Светлый травертин и Классическое ретро (1972).
 - 📱 **Идеально под экраны мобильных и ПК**: Вёрстка строго в пределах `100dvh` (без раздражающего скролла).
 - 🎯 **Умное меню выбора шаров**: Всплывающий выбор шаров появляется прямо под активным слотом и никогда не загораживает предыдущие ходы и подсказки.
 - 🤖 **Решатель Кнута**: Математически оптимальный алгоритм поиска кода, работающий в фоновом потоке (Web Worker).

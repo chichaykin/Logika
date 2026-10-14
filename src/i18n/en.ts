@@ -141,10 +141,11 @@ export const en: Dict = {
 
   'settings.title': 'Settings',
   'settings.theme': 'Theme',
-  'settings.themeLuxe': 'Walnut & Marble',
+  'settings.themeLuxe': 'Dark Walnut',
   'settings.themeSlate': 'Dark Slate',
+  'settings.themeTravertine': 'Light Travertine',
   'settings.themeEmerald': 'Emerald Felt',
-  'settings.themeRetro': 'Classic 1972',
+  'settings.themeRetro': 'Classic Retro',
   'settings.language': 'Language',
   'settings.langAuto': 'Auto',
   'settings.colorblind': 'Numbers on pegs (colorblind mode)',

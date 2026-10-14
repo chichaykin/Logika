@@ -120,6 +120,45 @@
   --keys-tray-bg: rgba(12, 20, 15, 0.85);
 }
 
+[data-theme="travertine"] {
+  --theme-name: 'travertine';
+  --bg-color: #f4efe6;
+  --bg-gradient: radial-gradient(ellipse 130% 90% at 50% 15%, rgba(190, 165, 130, 0.22) 0%, transparent 65%),
+                 radial-gradient(ellipse 100% 100% at 50% 30%, #eee8dc 0%, #e3dbcc 50%, #d8cfbe 100%);
+  --text-color: #2e261e;
+  --text-muted: #786d5e;
+  --board-bg: linear-gradient(180deg, #ede6d8 0%, #ded3bf 50%, #d1c4ad 100%);
+  --board-border: #b8a68b;
+  --board-highlight: rgba(255, 255, 255, 0.75);
+  --board-shadow: rgba(120, 100, 75, 0.35);
+  --board-outer-shadow: 0 16px 44px rgba(100, 80, 55, 0.2), 0 4px 12px rgba(100, 80, 55, 0.12), inset 1px 1px 2px rgba(255, 255, 255, 0.8), inset -1px -1px 3px rgba(130, 115, 95, 0.3);
+  --row-bg: rgba(250, 246, 238, 0.7);
+  --row-border: 1px solid rgba(184, 166, 139, 0.35);
+  --row-shadow: inset 1px 1px 3px rgba(110, 95, 75, 0.18), inset -1px -1px 1px rgba(255, 255, 255, 0.7);
+  --row-active-bg: rgba(255, 255, 255, 0.95);
+  --row-active-glow: 0 0 0 1.5px #9e783f, 0 0 16px rgba(158, 120, 63, 0.35);
+  --row-num-color: #7d6b52;
+  --hole-rim: rgba(160, 140, 115, 0.45);
+  --secret-bg: linear-gradient(180deg, #dfd3be 0%, #cfc1aa 100%);
+  --lid-bg: linear-gradient(180deg, #ede3d1 0%, #dbcdb7 100%);
+  --lid-border: #b5a388;
+  --lid-color: #4a3d2e;
+  --card-bg: rgba(247, 243, 235, 0.9);
+  --card-border: rgba(184, 166, 139, 0.4);
+  --card-shadow: 0 10px 28px rgba(90, 75, 55, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --btn-bg: rgba(240, 234, 222, 0.95);
+  --btn-border: rgba(184, 166, 139, 0.45);
+  --btn-text: #2e261e;
+  --btn-shadow: 0 2px 6px rgba(90, 75, 55, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --primary-color: #9e783f;
+  --primary-bg: linear-gradient(180deg, #b89358 0%, #8c6a34 100%);
+  --primary-hover: linear-gradient(180deg, #c7a164 0%, #99743c 100%);
+  --primary-text: #ffffff;
+  --primary-shadow: 0 4px 14px rgba(140, 106, 52, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  --accent-gold: #9e783f;
+  --keys-tray-bg: rgba(225, 216, 200, 0.85);
+}
+
 [data-theme="retro"] {
   --theme-name: 'retro';
   --bg-color: #f7f3e8;
@@ -591,6 +630,18 @@ button.slot[aria-pressed="true"] {
   box-shadow: inset 2px 2px 4px rgba(0,0,0,0.9), 0 1px 1px var(--hole-rim);
   border: 1px solid rgba(0,0,0,0.5);
   display: inline-block;
+}
+
+[data-theme="travertine"] .hole {
+  background: radial-gradient(circle at 45% 45%, #76644f 0%, #9f8d75 75%, #c8b9a2 100%);
+  box-shadow: inset 2px 2px 4px rgba(60, 48, 35, 0.55), 0 1px 1px rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(130, 110, 85, 0.4);
+}
+
+[data-theme="retro"] .hole {
+  background: radial-gradient(circle at 45% 45%, #593e03 0%, #8f6708 75%, #c49619 100%);
+  box-shadow: inset 2px 2px 4px rgba(45, 30, 2, 0.7), 0 1px 1px rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(90, 65, 5, 0.4);
 }
 
 .peg {
@@ -1264,6 +1315,10 @@ button.slot[aria-pressed="true"] {
 
 .dot-emerald {
   background: radial-gradient(circle at 35% 30%, #5ff088 0%, #163d2c 65%, #04100b 100%);
+}
+
+.dot-travertine {
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #dfd3bf 60%, #9e783f 100%);
 }
 
 .dot-retro {

@@ -158,10 +158,11 @@ export const ru = {
 
   'settings.title': 'Настройки',
   'settings.theme': 'Тема оформления',
-  'settings.themeLuxe': 'Орех и мрамор',
+  'settings.themeLuxe': 'Тёмное дерево',
   'settings.themeSlate': 'Тёмный сланец',
+  'settings.themeTravertine': 'Светлый травертин',
   'settings.themeEmerald': 'Изумрудное сукно',
-  'settings.themeRetro': 'Ретро 1972',
+  'settings.themeRetro': 'Классическое ретро',
   'settings.language': 'Язык',
   'settings.langAuto': 'Авто',
   'settings.colorblind': 'Цифры на штырьках (для дальтоников)',

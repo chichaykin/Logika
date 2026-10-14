@@ -23,16 +23,16 @@ test.describe('Home and Navigation', () => {
     await page.click('button:has-text("Тёмный сланец")');
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'slate');
 
-    // Switch theme to Emerald
-    await page.click('button:has-text("Изумрудное сукно")');
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'emerald');
+    // Switch theme to Travertine
+    await page.click('button:has-text("Светлый травертин")');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'travertine');
 
     // Switch theme to Retro
-    await page.click('button:has-text("Ретро 1972")');
+    await page.click('button:has-text("Классическое ретро")');
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'retro');
 
-    // Switch back to Luxe
-    await page.click('button:has-text("Орех и мрамор")');
+    // Switch back to Luxe (Dark Wood)
+    await page.click('button:has-text("Тёмное дерево")');
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'luxe');
 
     // Switch language to English
