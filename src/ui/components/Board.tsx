@@ -78,6 +78,8 @@ export interface BoardProps {
   secret?: Code | null;
   revealed: boolean;
   colorblind: boolean;
+  /** Статус окончания для подсветки открытого секрета */
+  endStatus?: 'won' | 'lost' | null;
   /** Выбор цвета прямо над/под активным рядом (in-place popover) */
   onPlaceColor?: (color: number) => void;
   /** Снятие выбора лунки (закрытие in-place popover при клике снаружи) */
@@ -93,7 +95,7 @@ function rowAria(r: RowView, n: number, length: number): string {
 }
 
 /** Жёлтое пластиковое поле «Логики»: шторка с секретом сверху и ряды попыток. */
-export function Board({ config, rows, secret, revealed, colorblind, onPlaceColor, onDeselect }: BoardProps) {
+export function Board({ config, rows, secret, revealed, colorblind, endStatus, onPlaceColor, onDeselect }: BoardProps) {
   const activeRef = useRef<HTMLLIElement>(null);
   const activeIndex = rows.findIndex((r) => r.active);
   const activeRow = rows[activeIndex];
@@ -126,7 +128,10 @@ export function Board({ config, rows, secret, revealed, colorblind, onPlaceColor
   const secretValues: (number | null)[] = revealed && secret ? [...secret] : new Array(config.length).fill(null);
   return (
     <div class="board" data-length={config.length}>
-      <div class="secret" aria-label={revealed ? t('game.secret') : t('game.secretHidden')}>
+      <div
+        class={`secret${revealed ? ' revealed' : ''}${endStatus ? ` ${endStatus}` : ''}`}
+        aria-label={revealed ? t('game.secret') : t('game.secretHidden')}
+      >
         <SlotRow values={secretValues} colorblind={colorblind} />
         <div class={`lid${revealed ? ' open' : ''}`} aria-hidden="true">
           <span>?</span>

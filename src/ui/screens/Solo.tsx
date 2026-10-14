@@ -12,9 +12,10 @@ import {
 import { t } from '../../i18n';
 import { navigate } from '../../router';
 import { solver } from '../../solver/client';
-import { commitSolo, haptic, presetOf, settings } from '../../store';
+import { commitSolo, haptic, presetOf, settings, toggleSound } from '../../store';
 import { Board, type RowView } from '../components/Board';
 import { Palette } from '../components/Palette';
+import { playLidOpen, playLoss, playWin } from '../sound/sound';
 import { useDraft } from '../useDraft';
 
 export function Solo() {
@@ -40,14 +41,32 @@ export function Solo() {
   const [hintLoading, setHintLoading] = useState(false);
   const [confirmNew, setConfirmNew] = useState(false);
 
+  const isOver = game.status === 'won' || game.status === 'lost';
+  const [revealed, setRevealed] = useState(() => isOver);
+  const [showGameOver, setShowGameOver] = useState(() => isOver);
+
   const mountedRef = useRef(true);
   const hintReqRef = useRef(0);
+  const revealTimerRef = useRef<number | null>(null);
+  const overTimerRef = useRef<number | null>(null);
+
+  const clearEndgameTimers = () => {
+    if (revealTimerRef.current !== null) {
+      clearTimeout(revealTimerRef.current);
+      revealTimerRef.current = null;
+    }
+    if (overTimerRef.current !== null) {
+      clearTimeout(overTimerRef.current);
+      overTimerRef.current = null;
+    }
+  };
 
   useEffect(() => {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
       hintReqRef.current++;
+      clearEndgameTimers();
     };
   }, []);
 
@@ -73,6 +92,23 @@ export function Solo() {
           attempts: next.attempts.length,
           hints: next.hintsUsed,
         });
+
+        clearEndgameTimers();
+        revealTimerRef.current = window.setTimeout(() => {
+          if (!mountedRef.current) return;
+          setRevealed(true);
+          playLidOpen();
+
+          overTimerRef.current = window.setTimeout(() => {
+            if (!mountedRef.current) return;
+            setShowGameOver(true);
+            if (next.status === 'won') {
+              playWin();
+            } else {
+              playLoss();
+            }
+          }, 380);
+        }, 260);
       }
     } catch {
       // ignore
@@ -107,11 +143,14 @@ export function Solo() {
   const startNewGame = () => {
     hintReqRef.current++;
     setHintLoading(false);
+    clearEndgameTimers();
     const fresh = newSolo(cfg);
     setGame(fresh);
     draft.reset();
     setHintData(null);
     setConfirmNew(false);
+    setRevealed(false);
+    setShowGameOver(false);
     saveActiveSolo(fresh);
   };
 
@@ -137,8 +176,6 @@ export function Solo() {
     }
   }
 
-  const isOver = game.status === 'won' || game.status === 'lost';
-
   return (
     <div class="screen screen-game screen-solo">
       <header class="game-header">
@@ -156,19 +193,30 @@ export function Solo() {
             </span>
           )}
         </div>
-        <button
-          type="button"
-          class="btn btn-sm btn-secondary"
-          onClick={() => {
-            if (game.status === 'playing' && game.attempts.length > 0) {
-              setConfirmNew(true);
-            } else {
-              startNewGame();
-            }
-          }}
-        >
-          {t('common.newGame')}
-        </button>
+        <div class="game-header-actions">
+          <button
+            type="button"
+            class="btn btn-sm btn-icon"
+            onClick={toggleSound}
+            aria-label={settings.value.sound ? t('common.mute') : t('common.unmute')}
+            title={settings.value.sound ? t('common.mute') : t('common.unmute')}
+          >
+            {settings.value.sound ? '🔊' : '🔇'}
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-secondary"
+            onClick={() => {
+              if (game.status === 'playing' && game.attempts.length > 0) {
+                setConfirmNew(true);
+              } else {
+                startNewGame();
+              }
+            }}
+          >
+            {t('common.newGame')}
+          </button>
+        </div>
       </header>
 
       {confirmNew && (
@@ -207,14 +255,15 @@ export function Solo() {
           config={game.config}
           rows={rows}
           secret={game.secret}
-          revealed={isOver}
+          revealed={revealed}
+          endStatus={game.status === 'won' || game.status === 'lost' ? game.status : null}
           colorblind={settings.value.colorblind}
           onPlaceColor={game.status === 'playing' ? draft.place : undefined}
           onDeselect={game.status === 'playing' ? draft.deselect : undefined}
         />
       </main>
 
-      {isOver ? (
+      {showGameOver ? (
         <div class="game-over-panel" role="region" aria-live="polite">
           <h2 class={`game-over-title ${game.status}`}>
             {game.status === 'won'

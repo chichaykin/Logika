@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from 'preact/hooks';
 import type { Code, GameConfig } from '../core/config';
+import { playMarbleDrop, playMarbleRemove } from './sound/sound';
 
 export type Draft = (number | null)[];
 
@@ -84,10 +85,22 @@ export function useDraft(config: GameConfig): DraftController {
     draft: state.draft,
     selected: state.selected,
     code: complete ? (state.draft as number[]) : null,
-    place: (color) => dispatch({ type: 'place', color }),
+    place: (color) => {
+      const target = state.selected ?? state.draft.indexOf(null);
+      if (target >= 0 && canPlace(state.draft, color, target, config.repeats)) {
+        playMarbleDrop(color, target);
+      }
+      dispatch({ type: 'place', color });
+    },
     select: (index) => dispatch({ type: 'select', index }),
     deselect: () => dispatch({ type: 'deselect' }),
-    backspace: () => dispatch({ type: 'backspace' }),
+    backspace: () => {
+      const hasSomething = state.draft.some((c) => c !== null);
+      if (hasSomething) {
+        playMarbleRemove();
+      }
+      dispatch({ type: 'backspace' });
+    },
     reset: () => dispatch({ type: 'reset' }),
     set: (code) => dispatch({ type: 'set', code }),
   };

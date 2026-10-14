@@ -25,6 +25,8 @@ export const en: Dict = {
   'common.confirm': 'Confirm',
   'common.yes': 'Yes',
   'common.start': 'Start',
+  'common.mute': 'Mute sound',
+  'common.unmute': 'Unmute sound',
 
   'game.attemptsLeft': {
     one: '{n} attempt left',
@@ -150,6 +152,8 @@ export const en: Dict = {
   'settings.langAuto': 'Auto',
   'settings.colorblind': 'Numbers on pegs (colorblind mode)',
   'settings.vibration': 'Vibration',
+  'settings.sound': 'Sound effects',
+  'settings.soundDesc': 'Sounds for marbles, secret lid and game end',
   'settings.difficulty': 'Difficulty',
   'settings.length': 'Code length',
   'settings.colors': 'Colors',

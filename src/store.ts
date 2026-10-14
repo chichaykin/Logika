@@ -36,6 +36,10 @@ export function updateSettings(patch: Partial<Settings>): void {
   saveSettings(settings.value);
 }
 
+export function toggleSound(): void {
+  updateSettings({ sound: !settings.value.sound });
+}
+
 export function commitSolo(r: SoloResult): void {
   stats.value = recordSolo(stats.value, r);
   saveStats(stats.value);

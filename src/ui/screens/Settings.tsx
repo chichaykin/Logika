@@ -3,6 +3,7 @@ import type { FeedbackMode } from '../../game/computerGame';
 import { t } from '../../i18n';
 import { navigate } from '../../router';
 import { settings, updateSettings } from '../../store';
+import { playMarbleDrop } from '../sound/sound';
 
 export function Settings() {
   const current = settings.value;
@@ -120,6 +121,25 @@ export function Settings() {
               class="toggle-checkbox"
               checked={current.vibration}
               onChange={(e) => updateSettings({ vibration: (e.target as HTMLInputElement).checked })}
+            />
+          </label>
+
+          <label class="setting-row">
+            <div>
+              <span>{t('settings.sound')}</span>
+              <div class="setting-desc" style={{ fontSize: '0.8rem', opacity: 0.75, marginTop: '2px' }}>
+                {t('settings.soundDesc')}
+              </div>
+            </div>
+            <input
+              type="checkbox"
+              class="toggle-checkbox"
+              checked={current.sound}
+              onChange={(e) => {
+                const nextVal = (e.target as HTMLInputElement).checked;
+                updateSettings({ sound: nextVal });
+                if (nextVal) playMarbleDrop(0, 0);
+              }}
             />
           </label>
         </section>

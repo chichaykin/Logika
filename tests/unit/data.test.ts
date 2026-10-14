@@ -5,6 +5,8 @@ import {
 import { MemoryStorage } from '../../src/data/storage';
 import { configForSettings, defaultSettings, loadSettings, saveSettings } from '../../src/data/settings';
 import { presetKey, PRESETS, normalizeConfig } from '../../src/core/config';
+import { settings, toggleSound } from '../../src/store';
+import { playLidOpen, playLoss, playMarbleDrop, playMarbleRemove, playWin } from '../../src/ui/sound/sound';
 
 describe('stats', () => {
   it('победы, серии и гистограмма', () => {
@@ -55,8 +57,9 @@ describe('stats', () => {
 describe('settings', () => {
   it('значения по умолчанию и сохранение', () => {
     const st = new MemoryStorage();
+    expect(defaultSettings().sound).toBe(true);
     expect(loadSettings(st)).toEqual(defaultSettings());
-    const s = { ...defaultSettings(), lang: 'en' as const, theme: 'slate' as const, preset: 'hard' as const, colorblind: true };
+    const s = { ...defaultSettings(), lang: 'en' as const, theme: 'slate' as const, preset: 'hard' as const, colorblind: true, sound: false };
     saveSettings(s, st);
     expect(loadSettings(st)).toEqual(s);
     expect(configForSettings(s)).toEqual(PRESETS.hard);
@@ -64,13 +67,22 @@ describe('settings', () => {
 
   it('мусор в хранилище заменяется значениями по умолчанию', () => {
     const st = new MemoryStorage();
-    st.setItem('logika:settings:v1', JSON.stringify({ lang: 'xx', theme: 'invalid', preset: 'wat', custom: { length: 99, colors: 1 } }));
+    st.setItem('logika:settings:v1', JSON.stringify({ lang: 'xx', theme: 'invalid', preset: 'wat', sound: 'loud', custom: { length: 99, colors: 1 } }));
     const s = loadSettings(st);
     expect(s.lang).toBe('auto');
     expect(s.theme).toBe('luxe');
     expect(s.preset).toBe('classic');
+    expect(s.sound).toBe(true);
     expect(s.custom.length).toBe(5);
     expect(s.custom.colors).toBe(6);
+  });
+
+  it('toggleSound переключает настройку звука в хранилище сигналов', () => {
+    const cur = settings.value.sound;
+    toggleSound();
+    expect(settings.value.sound).toBe(!cur);
+    toggleSound();
+    expect(settings.value.sound).toBe(cur);
   });
 });
 
@@ -108,5 +120,14 @@ describe('устойчивость к повреждённым данным', ()
   });
   it('normalizeConfig: NaN заменяется значениями по умолчанию', () => {
     expect(normalizeConfig({ length: NaN, colors: NaN, repeats: true, maxAttempts: NaN })).toEqual(PRESETS.classic);
+  });
+  it('функции звука не падают при вызове без window/AudioContext', () => {
+    expect(() => {
+      playMarbleDrop(0, 0);
+      playMarbleRemove();
+      playLidOpen();
+      playWin();
+      playLoss();
+    }).not.toThrow();
   });
 });

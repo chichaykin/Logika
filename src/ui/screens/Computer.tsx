@@ -15,10 +15,11 @@ import {
 import { t } from '../../i18n';
 import { navigate } from '../../router';
 import { solver } from '../../solver/client';
-import { commitComputer, haptic, presetOf, settings } from '../../store';
+import { commitComputer, haptic, presetOf, settings, toggleSound } from '../../store';
 import { Board, type RowView } from '../components/Board';
 import { FeedbackInput } from '../components/FeedbackInput';
 import { Palette } from '../components/Palette';
+import { playLidOpen, playLoss, playWin } from '../sound/sound';
 import { useDraft } from '../useDraft';
 
 export function Computer() {
@@ -36,20 +37,38 @@ export function Computer() {
   const [manualFb, setManualFb] = useState<Feedback>({ black: 0, white: 0 });
   const [fbError, setFbError] = useState<string | null>(null);
 
+  const isOver = game.status === 'solved' || game.status === 'failed';
+  const [revealed, setRevealed] = useState(() => isOver);
+  const [showGameOver, setShowGameOver] = useState(() => isOver);
+
   const computingRef = useRef(false);
   const mountedRef = useRef(true);
   const moveSessionRef = useRef(0);
   const timerRef = useRef<number | null>(null);
+  const revealTimerRef = useRef<number | null>(null);
+  const overTimerRef = useRef<number | null>(null);
+
+  const clearTimers = () => {
+    if (timerRef.current !== null) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    if (revealTimerRef.current !== null) {
+      clearTimeout(revealTimerRef.current);
+      revealTimerRef.current = null;
+    }
+    if (overTimerRef.current !== null) {
+      clearTimeout(overTimerRef.current);
+      overTimerRef.current = null;
+    }
+  };
 
   useEffect(() => {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
       moveSessionRef.current++;
-      if (timerRef.current !== null) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-      }
+      clearTimers();
     };
   }, []);
 
@@ -84,6 +103,23 @@ export function Computer() {
             solved: updated.status === 'solved',
             moves: updated.history.length,
           });
+
+          clearTimers();
+          revealTimerRef.current = window.setTimeout(() => {
+            if (!mountedRef.current) return;
+            setRevealed(true);
+            playLidOpen();
+
+            overTimerRef.current = window.setTimeout(() => {
+              if (!mountedRef.current) return;
+              setShowGameOver(true);
+              if (updated.status === 'solved') {
+                playWin();
+              } else {
+                playLoss();
+              }
+            }, 380);
+          }, 260);
         } else {
           // Следующий шаг с паузой
           computingRef.current = false;
@@ -143,6 +179,23 @@ export function Computer() {
           solved: updated.status === 'solved',
           moves: updated.history.length,
         });
+
+        clearTimers();
+        revealTimerRef.current = window.setTimeout(() => {
+          if (!mountedRef.current) return;
+          setRevealed(true);
+          playLidOpen();
+
+          overTimerRef.current = window.setTimeout(() => {
+            if (!mountedRef.current) return;
+            setShowGameOver(true);
+            if (updated.status === 'solved') {
+              playWin();
+            } else {
+              playLoss();
+            }
+          }, 380);
+        }, 260);
         return;
       }
 
@@ -172,13 +225,12 @@ export function Computer() {
 
   const startNew = () => {
     moveSessionRef.current++;
-    if (timerRef.current !== null) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
+    clearTimers();
     computingRef.current = false;
     setThinking(false);
     setHasStarted(false);
+    setRevealed(false);
+    setShowGameOver(false);
     secretDraft.reset();
     setManualFb({ black: 0, white: 0 });
     setFbError(null);
@@ -193,7 +245,15 @@ export function Computer() {
             ← {t('common.menu')}
           </button>
           <h2>{t('menu.computer')}</h2>
-          <div style={{ width: 40 }} />
+          <button
+            type="button"
+            class="btn btn-sm btn-icon"
+            onClick={toggleSound}
+            aria-label={settings.value.sound ? t('common.mute') : t('common.unmute')}
+            title={settings.value.sound ? t('common.mute') : t('common.unmute')}
+          >
+            {settings.value.sound ? '🔊' : '🔇'}
+          </button>
         </header>
 
         <main class="setup-content card">
@@ -294,7 +354,6 @@ export function Computer() {
     }
   }
 
-  const isOver = game.status === 'solved' || game.status === 'failed';
   const isContradiction = game.status === 'contradiction';
 
   return (
@@ -308,9 +367,20 @@ export function Computer() {
             {t('game.attempt', { n: game.history.length + (game.pendingGuess ? 1 : 0) })} / {game.config.maxAttempts}
           </span>
         </div>
-        <button type="button" class="btn btn-sm btn-secondary" onClick={startNew}>
-          {t('common.newGame')}
-        </button>
+        <div class="game-header-actions">
+          <button
+            type="button"
+            class="btn btn-sm btn-icon"
+            onClick={toggleSound}
+            aria-label={settings.value.sound ? t('common.mute') : t('common.unmute')}
+            title={settings.value.sound ? t('common.mute') : t('common.unmute')}
+          >
+            {settings.value.sound ? '🔊' : '🔇'}
+          </button>
+          <button type="button" class="btn btn-sm btn-secondary" onClick={startNew}>
+            {t('common.newGame')}
+          </button>
+        </div>
       </header>
 
       {thinking && (
@@ -340,12 +410,13 @@ export function Computer() {
           config={game.config}
           rows={rows}
           secret={game.secret}
-          revealed={isOver && game.secret !== null}
+          revealed={revealed && game.secret !== null}
+          endStatus={isOver ? (game.status === 'solved' ? 'won' : 'lost') : null}
           colorblind={settings.value.colorblind}
         />
       </main>
 
-      {isOver ? (
+      {showGameOver ? (
         <div class="game-over-panel" role="region" aria-live="polite">
           <h2 class={`game-over-title ${game.status}`}>
             {game.status === 'solved'

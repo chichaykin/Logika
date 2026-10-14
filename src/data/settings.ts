@@ -13,6 +13,7 @@ export interface Settings {
   /** Показывать символы на штырьках (для дальтоников). */
   colorblind: boolean;
   vibration: boolean;
+  sound: boolean;
   preset: PresetId;
   custom: GameConfig;
   feedbackMode: FeedbackMode;
@@ -24,6 +25,7 @@ export function defaultSettings(): Settings {
     theme: 'luxe',
     colorblind: false,
     vibration: true,
+    sound: true,
     preset: 'classic',
     custom: { length: 4, colors: 6, repeats: false, maxAttempts: 10 },
     feedbackMode: 'manual',
@@ -46,6 +48,7 @@ export function loadSettings(storage?: StorageLike): Settings {
   if (!['manual', 'auto'].includes(merged.feedbackMode)) merged.feedbackMode = def.feedbackMode;
   if (typeof merged.colorblind !== 'boolean') merged.colorblind = def.colorblind;
   if (typeof merged.vibration !== 'boolean') merged.vibration = def.vibration;
+  if (typeof merged.sound !== 'boolean') merged.sound = def.sound;
   return merged;
 }
 

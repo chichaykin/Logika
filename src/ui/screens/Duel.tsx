@@ -15,9 +15,10 @@ import {
 } from '../../game/duelGame';
 import { t } from '../../i18n';
 import { navigate } from '../../router';
-import { haptic, settings } from '../../store';
+import { haptic, settings, toggleSound } from '../../store';
 import { Board, type RowView } from '../components/Board';
 import { Palette } from '../components/Palette';
+import { playLidOpen, playLoss, playWin } from '../sound/sound';
 import { useDraft } from '../useDraft';
 
 export function Duel() {
@@ -43,8 +44,17 @@ export function Duel() {
   const handleGuessSubmit = () => {
     if (!draft.code) return;
     haptic(15);
-    setGame(duelGuess(game, draft.code));
+    const next = duelGuess(game, draft.code);
     draft.reset();
+    if (next.phase === 'roundOver') {
+      const won = duelRoundWon(next);
+      playLidOpen();
+      setTimeout(() => {
+        if (won) playWin();
+        else playLoss();
+      }, 350);
+    }
+    setGame(next);
   };
 
   const handleNextPhase = () => {
@@ -70,7 +80,15 @@ export function Duel() {
             ← {t('common.menu')}
           </button>
           <h2>{t('menu.duel')}</h2>
-          <div style={{ width: 40 }} />
+          <button
+            type="button"
+            class="btn btn-sm btn-icon"
+            onClick={toggleSound}
+            aria-label={settings.value.sound ? t('common.mute') : t('common.unmute')}
+            title={settings.value.sound ? t('common.mute') : t('common.unmute')}
+          >
+            {settings.value.sound ? '🔊' : '🔇'}
+          </button>
         </header>
 
         <main class="setup-content card">
@@ -120,7 +138,15 @@ export function Duel() {
             ← {t('common.menu')}
           </button>
           <h2>{t('menu.duel')}</h2>
-          <div style={{ width: 40 }} />
+          <button
+            type="button"
+            class="btn btn-sm btn-icon"
+            onClick={toggleSound}
+            aria-label={settings.value.sound ? t('common.mute') : t('common.unmute')}
+            title={settings.value.sound ? t('common.mute') : t('common.unmute')}
+          >
+            {settings.value.sound ? '🔊' : '🔇'}
+          </button>
         </header>
 
         <main class="setup-content card handoff-card">
@@ -173,7 +199,15 @@ export function Duel() {
           <div class="game-turn-info">
             <strong>{playerName(guesser)}</strong>: {t('game.attempt', { n: game.attempts.length + 1 })} / {game.config.maxAttempts}
           </div>
-          <div style={{ width: 40 }} />
+          <button
+            type="button"
+            class="btn btn-sm btn-icon"
+            onClick={toggleSound}
+            aria-label={settings.value.sound ? t('common.mute') : t('common.unmute')}
+            title={settings.value.sound ? t('common.mute') : t('common.unmute')}
+          >
+            {settings.value.sound ? '🔊' : '🔇'}
+          </button>
         </header>
 
         <main class="board-container">
@@ -209,7 +243,19 @@ export function Duel() {
     return (
       <div class="screen screen-game screen-duel-roundover">
         <header class="game-header">
+          <button type="button" class="btn btn-sm" onClick={() => navigate('home')}>
+            ← {t('common.menu')}
+          </button>
           <h2>{t('menu.duel')}</h2>
+          <button
+            type="button"
+            class="btn btn-sm btn-icon"
+            onClick={toggleSound}
+            aria-label={settings.value.sound ? t('common.mute') : t('common.unmute')}
+            title={settings.value.sound ? t('common.mute') : t('common.unmute')}
+          >
+            {settings.value.sound ? '🔊' : '🔇'}
+          </button>
         </header>
 
         <main class="setup-content card roundover-card">
@@ -226,6 +272,7 @@ export function Duel() {
               rows={[]}
               secret={game.secret}
               revealed={true}
+              endStatus={won ? 'won' : 'lost'}
               colorblind={settings.value.colorblind}
             />
           </div>
@@ -250,7 +297,19 @@ export function Duel() {
   return (
     <div class="screen screen-game screen-duel-matchover">
       <header class="game-header">
+        <button type="button" class="btn btn-sm" onClick={() => navigate('home')}>
+          ← {t('common.menu')}
+        </button>
         <h2>{t('duel.matchOver')}</h2>
+        <button
+          type="button"
+          class="btn btn-sm btn-icon"
+          onClick={toggleSound}
+          aria-label={settings.value.sound ? t('common.mute') : t('common.unmute')}
+          title={settings.value.sound ? t('common.mute') : t('common.unmute')}
+        >
+          {settings.value.sound ? '🔊' : '🔇'}
+        </button>
       </header>
 
       <main class="setup-content card matchover-card">

@@ -32,6 +32,8 @@ export const ru = {
   'common.confirm': 'Подтвердить',
   'common.yes': 'Да',
   'common.start': 'Начать',
+  'common.mute': 'Выключить звук',
+  'common.unmute': 'Включить звук',
 
   'game.attemptsLeft': {
     one: 'Осталась {n} попытка',
@@ -167,6 +169,8 @@ export const ru = {
   'settings.langAuto': 'Авто',
   'settings.colorblind': 'Цифры на штырьках (для дальтоников)',
   'settings.vibration': 'Вибрация',
+  'settings.sound': 'Звуковые эффекты',
+  'settings.soundDesc': 'Звук тяжелых шариков, шторки и финала',
   'settings.difficulty': 'Сложность',
   'settings.length': 'Позиций в коде',
   'settings.colors': 'Цветов',
