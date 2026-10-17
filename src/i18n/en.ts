@@ -154,6 +154,8 @@ export const en: Dict = {
   'settings.vibration': 'Vibration',
   'settings.sound': 'Sound effects',
   'settings.soundDesc': 'Sounds for marbles, secret lid and game end',
+  'settings.analytics': 'Anonymous analytics',
+  'settings.analyticsDesc': 'Helps improve the game (countries, sessions, no personal data)',
   'settings.difficulty': 'Difficulty',
   'settings.length': 'Code length',
   'settings.colors': 'Colors',

@@ -13,6 +13,7 @@ import {
   type FeedbackMode,
 } from '../../game/computerGame';
 import { t } from '../../i18n';
+import { trackGameStart } from '../../data/analytics';
 import { navigate } from '../../router';
 import { solver } from '../../solver/client';
 import { commitComputer, haptic, presetOf, settings, toggleSound } from '../../store';
@@ -155,6 +156,7 @@ export function Computer() {
     }
     computingRef.current = false;
     const fresh = newComputerGame(cfg, chosenMode, secret);
+    trackGameStart({ mode: 'computer', preset: presetOf(fresh.config), feedback_mode: chosenMode }, settings.value);
     setGame(fresh);
     setMode(chosenMode);
     setHasStarted(true);

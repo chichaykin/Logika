@@ -171,6 +171,8 @@ export const ru = {
   'settings.vibration': 'Вибрация',
   'settings.sound': 'Звуковые эффекты',
   'settings.soundDesc': 'Звук тяжелых шариков, шторки и финала',
+  'settings.analytics': 'Анонимная аналитика',
+  'settings.analyticsDesc': 'Помогает улучшать игру (страны, сессии, без личных данных)',
   'settings.difficulty': 'Сложность',
   'settings.length': 'Позиций в коде',
   'settings.colors': 'Цветов',

@@ -2,6 +2,12 @@ import { effect, signal } from '@preact/signals';
 import { presetKey, type GameConfig } from './core/config';
 import { loadSettings, saveSettings, type Settings } from './data/settings';
 import {
+  setAnalyticsEnabled,
+  syncUserProperties,
+  trackGameEnd,
+  trackSettingsChange,
+} from './data/analytics';
+import {
   loadStats,
   recordComputer,
   recordSolo,
@@ -35,8 +41,25 @@ effect(() => {
 });
 
 export function updateSettings(patch: Partial<Settings>): void {
-  settings.value = { ...settings.value, ...patch };
+  const prev = settings.value;
+  settings.value = { ...prev, ...patch };
   saveSettings(settings.value);
+
+  if (patch.analytics !== undefined) {
+    setAnalyticsEnabled(patch.analytics, settings.value, stats.value);
+  }
+
+  for (const [key, val] of Object.entries(patch)) {
+    if (val === undefined) continue;
+    const prevVal = prev[key as keyof Settings];
+    const prevSerialized = typeof prevVal === 'object' ? JSON.stringify(prevVal) : String(prevVal);
+    const nextSerialized = typeof val === 'object' ? JSON.stringify(val) : String(val);
+    if (prevSerialized !== nextSerialized) {
+      trackSettingsChange(key, nextSerialized, settings.value);
+    }
+  }
+
+  syncUserProperties(settings.value, stats.value);
 }
 
 export function toggleSound(): void {
@@ -46,15 +69,37 @@ export function toggleSound(): void {
 export function commitSolo(r: SoloResult): void {
   stats.value = recordSolo(stats.value, r);
   saveStats(stats.value);
+  trackGameEnd(
+    {
+      mode: 'solo',
+      preset: r.preset,
+      result: r.won ? 'win' : 'loss',
+      attempts: r.attempts,
+      hints_used: r.hints,
+    },
+    stats.value,
+    settings.value,
+  );
 }
 
 export function commitComputer(r: ComputerResult): void {
   stats.value = recordComputer(stats.value, r);
   saveStats(stats.value);
+  trackGameEnd(
+    {
+      mode: 'computer',
+      preset: r.preset,
+      result: r.solved ? 'win' : 'loss',
+      attempts: r.moves,
+    },
+    stats.value,
+    settings.value,
+  );
 }
 
 export function clearStats(): void {
   stats.value = resetStats();
+  syncUserProperties(settings.value, stats.value);
 }
 
 export function presetOf(config: GameConfig): string {

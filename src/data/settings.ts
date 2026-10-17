@@ -14,6 +14,8 @@ export interface Settings {
   colorblind: boolean;
   vibration: boolean;
   sound: boolean;
+  /** Сбор анонимной аналитики (GA4). */
+  analytics: boolean;
   preset: PresetId;
   custom: GameConfig;
   feedbackMode: FeedbackMode;
@@ -26,6 +28,7 @@ export function defaultSettings(): Settings {
     colorblind: false,
     vibration: true,
     sound: true,
+    analytics: true,
     preset: 'classic',
     custom: { length: 4, colors: 6, repeats: false, maxAttempts: 10 },
     feedbackMode: 'manual',
@@ -49,6 +52,7 @@ export function loadSettings(storage?: StorageLike): Settings {
   if (typeof merged.colorblind !== 'boolean') merged.colorblind = def.colorblind;
   if (typeof merged.vibration !== 'boolean') merged.vibration = def.vibration;
   if (typeof merged.sound !== 'boolean') merged.sound = def.sound;
+  if (typeof merged.analytics !== 'boolean') merged.analytics = def.analytics;
   return merged;
 }
 

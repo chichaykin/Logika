@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
+import { trackPwaInstallPrompt } from '../../data/analytics';
 import { t } from '../../i18n';
+import { settings } from '../../store';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -44,9 +46,15 @@ export function InstallPrompt() {
     if (!deferredPrompt) return;
     await deferredPrompt.prompt();
     const choice = await deferredPrompt.userChoice;
+    trackPwaInstallPrompt(choice.outcome, settings.value);
     if (choice.outcome === 'accepted') {
       setDeferredPrompt(null);
     }
+  };
+
+  const handleDismiss = () => {
+    trackPwaInstallPrompt('dismissed', settings.value);
+    setDismissed(true);
   };
 
   if (deferredPrompt) {
@@ -57,7 +65,7 @@ export function InstallPrompt() {
           <button type="button" class="btn btn-sm btn-primary" onClick={handleInstallClick}>
             {t('install.button')}
           </button>
-          <button type="button" class="btn btn-sm" onClick={() => setDismissed(true)}>
+          <button type="button" class="btn btn-sm" onClick={handleDismiss}>
             {t('install.dismiss')}
           </button>
         </div>

@@ -14,8 +14,9 @@ import {
   type Player,
 } from '../../game/duelGame';
 import { t } from '../../i18n';
+import { trackGameEnd, trackGameStart } from '../../data/analytics';
 import { navigate } from '../../router';
-import { haptic, settings, toggleSound } from '../../store';
+import { haptic, presetOf, settings, stats, toggleSound } from '../../store';
 import { Board, type RowView } from '../components/Board';
 import { Palette } from '../components/Palette';
 import { playLidOpen, playLoss, playWin } from '../sound/sound';
@@ -37,6 +38,9 @@ export function Duel() {
 
   const handleStartGuessing = () => {
     haptic(10);
+    if (game.results[0] === null && game.results[1] === null) {
+      trackGameStart({ mode: 'duel', preset: presetOf(game.config) }, settings.value);
+    }
     setGame(duelStartGuessing(game));
     draft.reset();
   };
@@ -59,7 +63,24 @@ export function Duel() {
 
   const handleNextPhase = () => {
     haptic(10);
-    setGame(duelNext(game));
+    const next = duelNext(game);
+    if (next.phase === 'matchOver') {
+      const winner = duelMatchWinner(next.results);
+      const maxAtt = next.config.maxAttempts;
+      const p1Att = Math.min(next.results[0] ?? 0, maxAtt);
+      const p2Att = Math.min(next.results[1] ?? 0, maxAtt);
+      trackGameEnd(
+        {
+          mode: 'duel',
+          preset: presetOf(next.config),
+          result: winner !== null ? 'win' : 'draw',
+          attempts: p1Att + p2Att,
+        },
+        stats.value,
+        settings.value,
+      );
+    }
+    setGame(next);
     draft.reset();
   };
 

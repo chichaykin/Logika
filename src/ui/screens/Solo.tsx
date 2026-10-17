@@ -10,6 +10,7 @@ import {
   type SoloState,
 } from '../../game/soloGame';
 import { t } from '../../i18n';
+import { trackGameStart, trackHintUsed } from '../../data/analytics';
 import { navigate } from '../../router';
 import { solver } from '../../solver/client';
 import { commitSolo, haptic, presetOf, settings, toggleSound } from '../../store';
@@ -76,6 +77,9 @@ export function Solo() {
 
   const handleGuessSubmit = () => {
     if (!draft.code || game.status !== 'playing') return;
+    if (game.attempts.length === 0) {
+      trackGameStart({ mode: 'solo', preset: presetOf(game.config) }, settings.value);
+    }
     hintReqRef.current++;
     setHintLoading(false);
     haptic(15);
@@ -124,6 +128,14 @@ export function Solo() {
       if (!mountedRef.current || hintReqRef.current !== reqId) return;
       setHintData(res);
       setGame((prev) => registerSoloHint(prev));
+      trackHintUsed(
+        {
+          preset: presetOf(game.config),
+          attempt_number: game.attempts.length + 1,
+          remaining_candidates: res.remaining,
+        },
+        settings.value,
+      );
     } catch {
       // ignore
     } finally {

@@ -150,6 +150,21 @@ export function Settings() {
               }}
             />
           </label>
+
+          <label class="setting-row">
+            <div>
+              <span>{t('settings.analytics')}</span>
+              <div class="setting-desc" style={{ fontSize: '0.8rem', opacity: 0.75, marginTop: '2px' }}>
+                {t('settings.analyticsDesc')}
+              </div>
+            </div>
+            <input
+              type="checkbox"
+              class="toggle-checkbox"
+              checked={current.analytics}
+              onChange={(e) => updateSettings({ analytics: (e.target as HTMLInputElement).checked })}
+            />
+          </label>
         </section>
 
         {/* Режим подсказок для компьютера */}

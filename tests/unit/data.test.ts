@@ -58,8 +58,9 @@ describe('settings', () => {
   it('значения по умолчанию и сохранение', () => {
     const st = new MemoryStorage();
     expect(defaultSettings().sound).toBe(true);
+    expect(defaultSettings().analytics).toBe(true);
     expect(loadSettings(st)).toEqual(defaultSettings());
-    const s = { ...defaultSettings(), lang: 'en' as const, theme: 'slate' as const, preset: 'hard' as const, colorblind: true, sound: false };
+    const s = { ...defaultSettings(), lang: 'en' as const, theme: 'slate' as const, preset: 'hard' as const, colorblind: true, sound: false, analytics: false };
     saveSettings(s, st);
     expect(loadSettings(st)).toEqual(s);
     expect(configForSettings(s)).toEqual(PRESETS.hard);
@@ -117,6 +118,7 @@ describe('устойчивость к повреждённым данным', ()
     const s = loadSettings(st);
     expect(s.colorblind).toBe(false);
     expect(s.vibration).toBe(true);
+    expect(s.analytics).toBe(true);
   });
   it('normalizeConfig: NaN заменяется значениями по умолчанию', () => {
     expect(normalizeConfig({ length: NaN, colors: NaN, repeats: true, maxAttempts: NaN })).toEqual(PRESETS.classic);
