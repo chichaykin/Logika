@@ -206,7 +206,8 @@
 
 html, body {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
   background-color: var(--bg-color);
   background-image: var(--bg-gradient);
   background-attachment: fixed;
@@ -223,6 +224,7 @@ html, body {
 
 #app, .app-root {
   min-height: 100%;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -402,6 +404,7 @@ button:disabled {
 }
 
 .home-lang-btn {
+  position: relative;
   background: transparent;
   border: none;
   color: var(--text-muted);
@@ -413,6 +416,21 @@ button:disabled {
   cursor: pointer;
   transition: all 0.15s ease;
   line-height: 1;
+  min-height: 26px;
+  min-width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-lang-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .home-lang-btn:hover:not(.active) {
@@ -435,7 +453,7 @@ button:disabled {
 
 .home-header {
   text-align: center;
-  margin: clamp(10px, 2vh, 18px) 0 clamp(8px, 1.5vh, 16px);
+  margin: clamp(6px, 1.5vh, 18px) 0 clamp(6px, 1.2vh, 16px);
 }
 
 .logo-box {
@@ -443,14 +461,14 @@ button:disabled {
   flex-direction: column;
   align-items: center;
   background: var(--board-bg);
-  padding: 14px 32px 18px;
+  padding: clamp(8px, 1.5vh, 14px) clamp(20px, 4vw, 32px) clamp(10px, 1.8vh, 18px);
   border-radius: 18px;
   box-shadow: var(--board-outer-shadow);
   border: 2px solid var(--board-border);
 }
 
 .logo-title {
-  font-size: 2.8rem;
+  font-size: clamp(2rem, 5vh, 2.8rem);
   font-weight: 900;
   color: var(--text-color);
   text-transform: uppercase;
@@ -496,15 +514,15 @@ button:disabled {
 .menu-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: clamp(8px, 1.4vh, 12px);
+  margin-bottom: clamp(10px, 1.8vh, 20px);
 }
 
 .menu-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  padding: clamp(10px, 1.5vh, 16px);
   background: var(--card-bg);
   border-radius: 14px;
   border: 1px solid var(--card-border);
@@ -540,7 +558,7 @@ button:disabled {
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: clamp(10px, 2vh, 24px);
 }
 
 .menu-secondary .btn {
@@ -564,7 +582,7 @@ button:disabled {
   align-items: center;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 4px 0 32px;
+  padding: 2px 0;
   min-height: 0;
   scrollbar-width: thin;
 }
@@ -572,12 +590,12 @@ button:disabled {
 .board {
   background: var(--board-bg);
   border-radius: 16px;
-  padding: clamp(6px, 1.4vh, 12px) clamp(8px, 2vw, 14px);
+  padding: clamp(4px, 1vh, 10px) clamp(6px, 1.5vw, 12px);
   box-shadow: var(--board-outer-shadow);
   border: 2px solid var(--board-border);
   display: flex;
   flex-direction: column;
-  gap: clamp(4px, 0.8vh, 8px);
+  gap: clamp(2px, 0.5vh, 6px);
   width: 100%;
   max-width: 440px;
   margin: auto 0;
@@ -615,6 +633,10 @@ button:disabled {
   transform-origin: top center;
   border: 1px solid var(--lid-border);
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 }
 
 .lid.open {
@@ -651,7 +673,7 @@ button:disabled {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: clamp(2px, 0.5vh, 6px);
+  gap: clamp(1.5px, 0.4vh, 4px);
 }
 
 .row {
@@ -660,7 +682,7 @@ button:disabled {
   display: flex;
   align-items: center;
   background: var(--row-bg);
-  padding: clamp(2px, 0.5vh, 5px) clamp(4px, 1.2vw, 8px);
+  padding: clamp(1.5px, 0.35vh, 4px) clamp(4px, 1.2vw, 8px);
   border-radius: 8px;
   box-shadow: var(--row-shadow);
   border: var(--row-border);
@@ -700,8 +722,8 @@ button:disabled {
 }
 
 .slot {
-  width: clamp(26px, 3.8vh, 36px);
-  height: clamp(26px, 3.8vh, 36px);
+  width: clamp(22px, 3.4vh, 36px);
+  height: clamp(22px, 3.4vh, 36px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -723,8 +745,8 @@ button.slot[aria-pressed="true"] {
 }
 
 .hole {
-  width: clamp(18px, 2.6vh, 24px);
-  height: clamp(18px, 2.6vh, 24px);
+  width: clamp(14px, 2.3vh, 24px);
+  height: clamp(14px, 2.3vh, 24px);
   border-radius: 50%;
   background: radial-gradient(circle at 45% 45%, #0d0a08 0%, #1c150e 75%, #36291b 100%);
   box-shadow: inset 2px 2px 4px rgba(0,0,0,0.9), 0 1px 1px var(--hole-rim);
@@ -745,8 +767,8 @@ button.slot[aria-pressed="true"] {
 }
 
 .peg {
-  width: clamp(26px, 3.8vh, 36px);
-  height: clamp(26px, 3.8vh, 36px);
+  width: clamp(22px, 3.4vh, 36px);
+  height: clamp(22px, 3.4vh, 36px);
   display: block;
   filter: drop-shadow(0 2px 3px rgba(0,0,0,0.45));
 }
@@ -935,14 +957,14 @@ button.slot[aria-pressed="true"] {
   margin-top: auto;
   background: var(--card-bg);
   border-radius: 14px;
-  padding: clamp(8px, 1.2vh, 12px) clamp(10px, 2vw, 14px);
+  padding: clamp(6px, 1vh, 12px) clamp(8px, 1.8vw, 14px);
   border: 1px solid var(--card-border);
   box-shadow: 0 -4px 20px rgba(0,0,0,0.35);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   display: flex;
   flex-direction: column;
-  gap: clamp(6px, 1vh, 10px);
+  gap: clamp(4px, 0.8vh, 8px);
 }
 
 .palette-colors {
@@ -1079,11 +1101,39 @@ button.slot[aria-pressed="true"] {
   background: rgba(247, 227, 136, 0.16);
   border: 1px solid rgba(212, 175, 55, 0.45);
   color: #f7e6a1;
+  padding: clamp(4px, 0.8vh, 8px) clamp(8px, 1.5vw, 12px);
+  margin-bottom: clamp(3px, 0.6vh, 6px);
+  font-size: clamp(0.78rem, 1.3vh, 0.88rem);
+  flex-shrink: 0;
 }
 
 .hint-info {
   display: flex;
   flex-direction: column;
+  line-height: 1.2;
+}
+
+.hint-guess-preview {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hint-peg-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hint-guess-preview .peg {
+  width: clamp(16px, 2.4vh, 22px);
+  height: clamp(16px, 2.4vh, 22px);
+}
+
+.hint-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .thinking-banner {
@@ -1188,20 +1238,24 @@ button.slot[aria-pressed="true"] {
 
 .update-toast {
   position: fixed;
-  bottom: calc(var(--safe-bottom) + 16px);
+  top: calc(var(--safe-top) + 12px);
   left: 50%;
   transform: translateX(-50%);
   background: var(--card-bg);
   color: var(--text-color);
-  padding: 10px 18px;
+  padding: 8px 18px;
   border-radius: 30px;
-  border: 1px solid var(--card-border);
+  border: 1px solid var(--accent-gold);
   box-shadow: 0 8px 24px rgba(0,0,0,0.45);
   display: flex;
   align-items: center;
   gap: 12px;
-  z-index: 90;
-  font-size: 0.9rem;
+  z-index: 1000;
+  font-size: 0.88rem;
+  max-width: 90vw;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .install-prompt-banner {
@@ -1622,3 +1676,81 @@ button.slot[aria-pressed="true"] {
   gap: 10px;
   justify-content: center;
 }
+
+/* ================== COMPACT VIEWPORTS (ZERO-SCROLL ENFORCEMENT) ================== */
+
+@media (max-height: 680px) {
+  .screen-game {
+    padding-top: calc(var(--safe-top) + 2px);
+    padding-bottom: calc(var(--safe-bottom) + 4px);
+  }
+
+  .game-header {
+    height: 30px;
+    margin-bottom: 4px;
+  }
+
+  .board {
+    padding: 3px 6px;
+    gap: 2px;
+  }
+
+  .secret {
+    padding: 2px 8px;
+  }
+
+  .row {
+    padding: 1px 4px;
+  }
+
+  .rows {
+    gap: 1.5px;
+  }
+
+  .slot {
+    width: clamp(20px, 3vh, 26px);
+    height: clamp(20px, 3vh, 26px);
+  }
+
+  .peg {
+    width: clamp(16px, 2.5vh, 22px);
+    height: clamp(16px, 2.5vh, 22px);
+  }
+
+  .hole {
+    width: clamp(12px, 1.8vh, 16px);
+    height: clamp(12px, 1.8vh, 16px);
+  }
+
+  .palette {
+    padding: 5px 8px;
+    gap: 4px;
+  }
+
+  .pal-btn {
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .pal-btn .peg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .palette-actions .btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  .hint-banner {
+    padding: 3px 8px;
+    margin-bottom: 3px;
+    font-size: 0.78rem;
+  }
+
+  .hint-guess-preview .peg {
+    width: 16px;
+    height: 16px;
+  }
+}
+

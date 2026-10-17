@@ -37,9 +37,10 @@ test.describe('Solo Game Mode', () => {
     const hintBtn = page.locator('.btn-hint');
     await hintBtn.click();
 
-    // Hint banner should appear
+    // Hint banner should appear with color preview
     await expect(page.locator('.hint-banner')).toBeVisible();
     await expect(page.locator('.hint-banner')).toContainText('Осталось вариантов');
+    await expect(page.locator('.hint-guess-preview .peg')).toHaveCount(4);
 
     // Use hint
     await page.click('text=Подставить');
@@ -119,6 +120,12 @@ test.describe('Solo Game Mode', () => {
     const firstRow = page.locator('.row').first();
     const firstRowBox = await firstRow.boundingBox();
     expect(popoverBox!.y).toBeGreaterThan(firstRowBox!.y + firstRowBox!.height);
+
+    // Row 10 is completely visible above the palette without overlap
+    const row10 = page.locator('.row').nth(9);
+    const row10Box = await row10.boundingBox();
+    const paletteBox = await palette.boundingBox();
+    expect(paletteBox!.y).toBeGreaterThanOrEqual(row10Box!.y + row10Box!.height - 1);
   });
 
   test('supports PC keyboard shortcuts (1-6, Backspace, Enter)', async ({ page }) => {

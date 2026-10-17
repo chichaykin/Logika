@@ -16,6 +16,7 @@ import { solver } from '../../solver/client';
 import { commitSolo, haptic, presetOf, settings, toggleSound } from '../../store';
 import { Board, type RowView } from '../components/Board';
 import { Palette } from '../components/Palette';
+import { Peg } from '../components/Peg';
 import { playLidOpen, playLoss, playWin } from '../sound/sound';
 import { useDraft } from '../useDraft';
 
@@ -253,12 +254,27 @@ export function Solo() {
             <span>{t('game.hintRemaining', { n: hintData.remaining })}</span>
             <small>{t('game.hintBest')}</small>
           </div>
-          <button type="button" class="btn btn-sm btn-primary" onClick={handleApplyHint}>
-            {t('game.useHint')}
-          </button>
-          <button type="button" class="btn btn-sm" onClick={() => setHintData(null)}>
-            ✕
-          </button>
+          <div class="hint-guess-preview" aria-hidden="true">
+            {hintData.guess.map((c, i) => (
+              <span key={i} class="hint-peg-wrapper">
+                <Peg color={c} symbol={settings.value.colorblind} />
+              </span>
+            ))}
+          </div>
+          <div class="hint-actions">
+            <button type="button" class="btn btn-sm btn-primary" onClick={handleApplyHint}>
+              {t('game.useHint')}
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm"
+              onClick={() => setHintData(null)}
+              aria-label={t('common.cancel')}
+              title={t('common.cancel')}
+            >
+              ✕
+            </button>
+          </div>
         </div>
       )}
 
