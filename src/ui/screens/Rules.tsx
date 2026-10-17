@@ -1,8 +1,12 @@
+import { useState } from 'preact/hooks';
 import { t } from '../../i18n';
 import { navigate } from '../../router';
+import { GamesModal } from '../components/GamesModal';
 import { KeyPeg, Peg } from '../components/Peg';
 
 export function Rules() {
+  const [gamesOpen, setGamesOpen] = useState(false);
+
   return (
     <div class="screen screen-rules">
       <header class="game-header">
@@ -103,7 +107,19 @@ export function Rules() {
           <h3>{t('rules.historyTitle')}</h3>
           <p>{t('rules.historyP1')}</p>
         </section>
+
+        <section class="rule-block" style={{ marginTop: 4 }}>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            style={{ width: '100%' }}
+            onClick={() => setGamesOpen(true)}
+          >
+            🎮 {t('games.title')}
+          </button>
+        </section>
       </main>
+      <GamesModal open={gamesOpen} onClose={() => setGamesOpen(false)} />
     </div>
   );
 }

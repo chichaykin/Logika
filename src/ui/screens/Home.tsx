@@ -4,11 +4,13 @@ import { loadActiveSolo, type SoloState } from '../../game/soloGame';
 import { locale, t } from '../../i18n';
 import { navigate } from '../../router';
 import { haptic, settings, updateSettings } from '../../store';
+import { GamesModal } from '../components/GamesModal';
 import { InstallPrompt } from '../components/InstallPrompt';
 import { Peg } from '../components/Peg';
 
 export function Home() {
   const [activeSolo, setActiveSolo] = useState<SoloState | null>(null);
+  const [gamesOpen, setGamesOpen] = useState(false);
 
   useEffect(() => {
     setActiveSolo(loadActiveSolo());
@@ -25,6 +27,20 @@ export function Home() {
   return (
     <div class="screen screen-home">
       <div class="home-top-bar">
+        <button
+          type="button"
+          class="home-games-pill"
+          onClick={() => {
+            haptic(8);
+            setGamesOpen(true);
+          }}
+          aria-label={t('games.title')}
+          title={t('games.title')}
+        >
+          <span aria-hidden="true">🎮</span>
+          <span>{t('games.button')}</span>
+        </button>
+
         <div class="home-lang-switch" role="group" aria-label={t('settings.language')}>
           <span class="home-lang-icon" aria-hidden="true">🌐</span>
           <button
@@ -136,6 +152,7 @@ export function Home() {
       </div>
 
       <InstallPrompt />
+      <GamesModal open={gamesOpen} onClose={() => setGamesOpen(false)} />
     </div>
   );
 }

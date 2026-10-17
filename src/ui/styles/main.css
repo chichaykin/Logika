@@ -378,10 +378,35 @@ button:disabled {
 .home-top-bar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 100%;
   margin-bottom: clamp(2px, 1vh, 6px);
   min-height: 32px;
+  gap: 8px;
+}
+
+.home-games-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-color);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-height: 32px;
+}
+
+.home-games-pill:hover {
+  border-color: var(--accent-gold);
+  transform: translateY(-1px);
 }
 
 .home-lang-switch {
@@ -1753,4 +1778,180 @@ button.slot[aria-pressed="true"] {
     height: 16px;
   }
 }
+
+/* ================== GAMES CATALOG MODAL ================== */
+
+.games-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 200;
+}
+
+.games-modal-card {
+  width: 100%;
+  max-width: 440px;
+  max-height: 88dvh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+}
+
+.games-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 10px;
+}
+
+.games-modal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.games-modal-close-icon {
+  min-width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.games-modal-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.games-catalog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.game-catalog-card {
+  display: block;
+  text-decoration: none;
+  color: var(--text-color);
+  background: var(--btn-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px;
+  transition: all 0.18s ease;
+}
+
+.game-catalog-card-link:hover {
+  border-color: var(--accent-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow);
+}
+
+.game-catalog-card-current {
+  border-color: var(--accent-gold);
+  opacity: 0.92;
+}
+
+.game-catalog-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.game-catalog-icon {
+  font-size: 1.85rem;
+  line-height: 1;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--card-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.game-catalog-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.game-catalog-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.game-catalog-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.game-catalog-badge {
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(212, 175, 55, 0.18);
+  color: var(--accent-gold);
+  border: 1px solid var(--card-border);
+  white-space: nowrap;
+}
+
+.game-catalog-play {
+  pointer-events: none;
+}
+
+.game-catalog-desc {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.game-catalog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.game-catalog-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.16);
+  color: var(--text-muted);
+  border: 1px solid var(--card-border);
+}
+
+.games-catalog-footer-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+  opacity: 0.85;
+}
+
+.games-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
 

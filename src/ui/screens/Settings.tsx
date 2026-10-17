@@ -1,12 +1,15 @@
+import { useState } from 'preact/hooks';
 import type { PresetId } from '../../core/config';
 import type { FeedbackMode } from '../../game/computerGame';
 import { t } from '../../i18n';
 import { navigate } from '../../router';
 import { settings, updateSettings } from '../../store';
+import { GamesModal } from '../components/GamesModal';
 import { playMarbleDrop } from '../sound/sound';
 
 export function Settings() {
   const current = settings.value;
+  const [gamesOpen, setGamesOpen] = useState(false);
 
   const handlePresetChange = (preset: PresetId) => {
     updateSettings({ preset });
@@ -270,7 +273,20 @@ export function Settings() {
             </div>
           )}
         </section>
+
+        {/* Другие наши игры */}
+        <section class="card settings-section">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            style={{ width: '100%' }}
+            onClick={() => setGamesOpen(true)}
+          >
+            🎮 {t('games.title')}
+          </button>
+        </section>
       </main>
+      <GamesModal open={gamesOpen} onClose={() => setGamesOpen(false)} />
     </div>
   );
 }

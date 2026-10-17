@@ -2,9 +2,22 @@ import { render } from 'preact';
 import { App } from './app';
 import { initPwa } from './pwa';
 import { initAnalytics, trackPwaInstalled, trackScreenView } from './data/analytics';
+import { cleanLangParamFromUrl, parseLangFromSearch, refreshGamesCatalog } from './data/gamesCatalog';
 import { route } from './router';
-import { settings, stats } from './store';
+import { settings, stats, updateSettings } from './store';
 import './ui/styles/main.css';
+
+// Синхронизация языка по query-параметру ?lang=ru|en при переходе из других игр коллекции
+if (typeof window !== 'undefined') {
+  const urlLang = parseLangFromSearch(window.location.search);
+  if (urlLang) {
+    if (settings.value.lang !== urlLang) {
+      updateSettings({ lang: urlLang });
+    }
+    cleanLangParamFromUrl();
+  }
+  void refreshGamesCatalog();
+}
 
 // Инициализация Service Worker для PWA
 initPwa();

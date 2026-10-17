@@ -217,6 +217,14 @@ export const ru = {
   'update.available': 'Доступна новая версия',
   'update.reload': 'Обновить',
   'offline.ready': 'Готово к игре без интернета',
+
+  'games.button': 'Игры',
+  'games.title': 'Наши логические игры',
+  'games.subtitle': 'Переключайтесь между играми в любой момент — текущая партия сохраняется автоматически.',
+  'games.currentBadge': 'Вы здесь',
+  'games.playButton': 'Играть',
+  'games.footerHint': 'Коллекция офлайн PWA-игр Михаила Чичайкина',
+  'games.close': 'Закрыть',
 } as const satisfies Record<string, Msg>;
 
 export type Key = keyof typeof ru;

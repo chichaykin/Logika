@@ -75,4 +75,18 @@ test.describe('Home and Navigation', () => {
     await expect(page.locator('.home-lang-btn.active')).toHaveText('RU');
     await expect(page.locator('.menu-item-primary .menu-item-title')).toHaveText('Играть');
   });
+
+  test('opens games catalog modal and passes active language in cross-game link', async ({ page }) => {
+    await page.goto('/?lang=en');
+    await expect(page.locator('.home-lang-btn.active')).toHaveText('EN');
+
+    await page.click('.home-games-pill');
+    await expect(page.locator('.games-modal-title')).toContainText('Our Logic Games');
+
+    const gomokuLink = page.locator('a[data-game-id="gomoku"]');
+    await expect(gomokuLink).toHaveAttribute('href', 'https://chichaykin.github.io/Gomoku/?lang=en');
+
+    await page.click('.games-modal-close-icon');
+    await expect(page.locator('.games-modal-overlay')).toHaveCount(0);
+  });
 });

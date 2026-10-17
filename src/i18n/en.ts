@@ -200,4 +200,12 @@ export const en: Dict = {
   'update.available': 'A new version is available',
   'update.reload': 'Update',
   'offline.ready': 'Ready to play offline',
+
+  'games.button': 'Games',
+  'games.title': 'Our Logic Games',
+  'games.subtitle': 'Switch between games anytime — your current match is saved automatically.',
+  'games.currentBadge': 'Playing now',
+  'games.playButton': 'Play',
+  'games.footerHint': 'Offline-ready PWA collection by Mikhail Chichaykin',
+  'games.close': 'Close',
 };
